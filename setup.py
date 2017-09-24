@@ -51,7 +51,7 @@ setup(
     packages=setuptools.find_packages(exclude=["tests*"]),
     include_package_data=True,
     install_requires=requirements,
-    license="BSD license",
+    license="BSD 3-Clause",
     zip_safe=False,
     keywords="dask-distance",
     classifiers=[

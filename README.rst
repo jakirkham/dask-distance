@@ -31,7 +31,7 @@ dask-distance
 Distance computations with Dask (akin to scipy.spatial.distance)
 
 
-* Free software: BSD license
+* Free software: BSD 3-Clause
 * Documentation: https://dask-distance.readthedocs.io.
 
 
