@@ -25,9 +25,6 @@ class PyTest(TestCommand):
 with open("README.rst") as readme_file:
     readme = readme_file.read()
 
-with open("HISTORY.rst") as history_file:
-    history = history_file.read()
-
 requirements = [
     # TODO: put package requirements here
 ]
@@ -46,7 +43,7 @@ setup(
     name="dask-distance",
     version=versioneer.get_version(),
     description="Distance computations with Dask (akin to scipy.spatial.distance)",
-    long_description=readme + "\n\n" + history,
+    long_description=readme,
     author="John Kirkham",
     author_email="kirkhamj@janelia.hhmi.org",
     url="https://github.com/jakirkham/dask-distance",
