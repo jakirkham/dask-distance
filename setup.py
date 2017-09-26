@@ -32,6 +32,7 @@ requirements = [
 
 test_requirements = [
     "pytest",
+    "scipy",
 ]
 
 cmdclasses = {
