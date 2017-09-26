@@ -35,9 +35,11 @@ def dice(u, v):
 
     uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
 
+    uv_mismtch = uv_mtx[1, 0] + uv_mtx[0, 1]
+
     result = (
-        (uv_mtx[1, 0] + uv_mtx[0, 1]) /
-        (2 * uv_mtx[1, 1] + uv_mtx[1, 0] + uv_mtx[0, 1])
+        (uv_mismtch) /
+        (2 * uv_mtx[1, 1] + uv_mismtch)
     )
 
     return result
@@ -90,9 +92,11 @@ def jaccard(u, v):
 
     uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
 
+    uv_mismtch = uv_mtx[1, 0] + uv_mtx[0, 1]
+
     result = (
-        (uv_mtx[1, 0] + uv_mtx[0, 1]) /
-        (uv_mtx[1, 1] + uv_mtx[1, 0] + uv_mtx[0, 1])
+        (uv_mismtch) /
+        (uv_mtx[1, 1] + uv_mismtch)
     )
 
     return result
@@ -119,9 +123,11 @@ def kulsinski(u, v):
 
     uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
 
+    result_numer = 2 * (uv_mtx[1, 0] + uv_mtx[0, 1]) + uv_mtx[0, 0]
+
     result = (
-        (2 * (uv_mtx[1, 0] + uv_mtx[0, 1]) + uv_mtx[0, 0]) /
-        (uv_mtx[1, 1] + 2 * (uv_mtx[1, 0] + uv_mtx[0, 1]) + uv_mtx[0, 0])
+        (result_numer) /
+        (uv_mtx[1, 1] + result_numer)
     )
 
     return result
