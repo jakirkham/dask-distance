@@ -19,6 +19,7 @@ import dask_distance
         "hamming",
         "jaccard",
         "kulsinski",
+        "rogerstanimoto",
     ]
 )
 @pytest.mark.parametrize(
