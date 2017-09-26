@@ -30,7 +30,7 @@ def dice(u, v):
         v:           1-D bool array
 
     Returns:
-        float:       Dice dissimilarity.
+        float:       Dice dissimilarity
     """
 
     uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
