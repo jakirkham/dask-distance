@@ -22,6 +22,7 @@ import dask_distance
         "rogerstanimoto",
         "russellrao",
         "sokalmichener",
+        "sokalsneath",
     ]
 )
 @pytest.mark.parametrize(
