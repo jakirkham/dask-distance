@@ -255,3 +255,34 @@ def sokalsneath(u, v):
     )
 
     return result
+
+
+def yule(u, v):
+    """
+    Finds the Yule dissimilarity between two 1-D bool arrays.
+
+    .. math::
+
+       \\frac{ 2 \cdot c_{TF} \cdot c_{FT} }
+             { c_{TT} \cdot c_{FF} + c_{TF} \cdot c_{FT} }
+
+    where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
+
+    Args:
+        u:           1-D bool array
+        v:           1-D bool array
+
+    Returns:
+        float:       Yule dissimilarity
+    """
+
+    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+
+    uv_prod_mismtch = uv_mtx[1, 0] * uv_mtx[0, 1]
+
+    result = (
+        (2 * uv_prod_mismtch) /
+        (uv_mtx[1, 1] * uv_mtx[0, 0] + uv_prod_mismtch)
+    )
+
+    return result
