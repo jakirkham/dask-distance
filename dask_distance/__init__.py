@@ -21,7 +21,7 @@ def dice(u, v):
 
     .. math::
 
-       \\frac{ c_{TF} + c_{FT} }{ 2 \cdot c_{TT} + c_{FT} + c_{TF} }
+       \\frac{ c_{TF} + c_{FT} }{ 2 \cdot c_{TT} + c_{TF} + c_{FT} }
 
     where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
 
@@ -49,7 +49,7 @@ def hamming(u, v):
 
     .. math::
 
-       \\frac{ c_{TF} + c_{FT} }{ c_{TT} + c_{FT} + c_{TF} + c_{FF} }
+       \\frac{ c_{TF} + c_{FT} }{ c_{TT} + c_{TF} + c_{FT} + c_{FF} }
 
     where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
 
