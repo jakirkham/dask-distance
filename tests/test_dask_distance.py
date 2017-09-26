@@ -17,6 +17,7 @@ import dask_distance
     "funcname", [
         "dice",
         "hamming",
+        "jaccard",
     ]
 )
 @pytest.mark.parametrize(
