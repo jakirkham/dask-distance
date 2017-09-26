@@ -131,3 +131,34 @@ def kulsinski(u, v):
     )
 
     return result
+
+
+def rogerstanimoto(u, v):
+    """
+    Finds the Rogers-Tanimoto dissimilarity between two 1-D bool arrays.
+
+    .. math::
+
+       \\frac{ 2 \cdot \left(c_{TF} + c_{FT}\\right) }
+             { c_{TT} + 2 \cdot \left(c_{TF} + c_{FT}\\right) + c_{FF} }
+
+    where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
+
+    Args:
+        u:           1-D bool array
+        v:           1-D bool array
+
+    Returns:
+        float:       Rogers-Tanimoto dissimilarity
+    """
+
+    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+
+    result_numer = 2 * (uv_mtx[1, 0] + uv_mtx[0, 1])
+
+    result = (
+        (result_numer) /
+        (uv_mtx[1, 1] + result_numer + uv_mtx[0, 0])
+    )
+
+    return result
