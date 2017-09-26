@@ -1,12 +1,12 @@
 import dask
 import dask.array
 
-import dask_distance._compat
+from . import _compat
 
 
 def _bool_cmp_mtx_cnt(u, v):
-    u = dask_distance._compat._asarray(u)
-    v = dask_distance._compat._asarray(v)
+    u = _compat._asarray(u)
+    v = _compat._asarray(v)
 
     u_1 = u.astype(bool)
     v_1 = v.astype(bool)
