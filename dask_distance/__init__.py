@@ -162,3 +162,34 @@ def rogerstanimoto(u, v):
     )
 
     return result
+
+
+def russellrao(u, v):
+    """
+    Finds the Russell-Rao dissimilarity between two 1-D bool arrays.
+
+    .. math::
+
+       \\frac{ c_{TF} + c_{FT} + c_{FF} }
+             { c_{TT} + c_{TF} + c_{FT} + c_{FF} }
+
+    where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
+
+    Args:
+        u:           1-D bool array
+        v:           1-D bool array
+
+    Returns:
+        float:       Russell-Rao dissimilarity
+    """
+
+    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+
+    result_numer = uv_mtx[1, 0] + uv_mtx[0, 1] + uv_mtx[0, 0]
+
+    result = (
+        (result_numer) /
+        (uv_mtx[1, 1] + result_numer)
+    )
+
+    return result
