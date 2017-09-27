@@ -162,6 +162,38 @@ def correlation(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
+def cosine(u, v):
+    """
+    Finds the Cosine distance between two 1-D arrays.
+
+    .. math::
+
+       1 - \\frac{ u \cdot v }
+                 { \lVert u \\rVert_{2} \lVert v \\rVert_{2} }
+
+    Args:
+        u:           1-D array or collection of 1-D arrays
+        v:           1-D array or collection of 1-D arrays
+
+    Returns:
+        float:       Cosine distance
+    """
+
+    u = u.astype(float)
+    v = v.astype(float)
+
+    result = 1 - (
+        (u * v).sum(axis=-1) /
+        (
+            (abs(u) ** 2).sum(axis=-1) ** 0.5 *
+            (abs(v) ** 2).sum(axis=-1) ** 0.5
+        )
+    )
+
+    return result
+
+
 #####################################################
 #                                                   #
 #  Boolean vector distance/dissimilarity functions  #
