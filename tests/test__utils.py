@@ -11,6 +11,14 @@ import numpy as np
 import dask_distance._utils
 
 
+@pytest.mark.parametrize("et, u, v", [
+    (ValueError, np.zeros((2,), dtype=bool), np.zeros((3,), dtype=bool)),
+])
+def test__bool_cmp_mtx_cnt_err(et, u, v):
+    with pytest.raises(et):
+        dask_distance._utils._bool_cmp_mtx_cnt(u, v)
+
+
 def test__bool_cmp_mtx_cnt():
     u = np.array([0, 0, 0, 1, 1, 1, 1, 1, 1, 1], dtype=bool)
     v = np.array([0, 1, 1, 0, 0, 0, 1, 1, 1, 1], dtype=bool)
