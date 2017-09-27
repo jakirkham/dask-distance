@@ -18,6 +18,7 @@ import dask_distance
         "braycurtis",
         "canberra",
         "chebyshev",
+        "cityblock",
     ]
 )
 @pytest.mark.parametrize("et, u, v", [
@@ -37,6 +38,7 @@ def test_1d_dist_err(funcname, et, u, v):
         "braycurtis",
         "canberra",
         "chebyshev",
+        "cityblock",
     ]
 )
 @pytest.mark.parametrize(
@@ -74,6 +76,7 @@ def test_1d_dist(funcname, seed, size, chunks):
         "braycurtis",
         "canberra",
         "chebyshev",
+        "cityblock",
     ]
 )
 @pytest.mark.parametrize(
