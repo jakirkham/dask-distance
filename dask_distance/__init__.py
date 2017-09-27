@@ -15,6 +15,7 @@ del get_versions
 from . import _utils
 
 
+@_utils._broadcast_uv_wrapper
 def dice(u, v):
     """
     Finds the Dice dissimilarity between two 1-D bool arrays.
@@ -45,6 +46,7 @@ def dice(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
 def hamming(u, v):
     """
     Finds the Hamming distance between two 1-D bool arrays.
@@ -72,6 +74,7 @@ def hamming(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
 def jaccard(u, v):
     """
     Finds the Jaccard-Needham dissimilarity between two 1-D bool arrays.
@@ -102,6 +105,7 @@ def jaccard(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
 def kulsinski(u, v):
     """
     Finds the Kulsinski dissimilarity between two 1-D bool arrays.
@@ -133,6 +137,7 @@ def kulsinski(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
 def rogerstanimoto(u, v):
     """
     Finds the Rogers-Tanimoto dissimilarity between two 1-D bool arrays.
@@ -164,6 +169,7 @@ def rogerstanimoto(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
 def russellrao(u, v):
     """
     Finds the Russell-Rao dissimilarity between two 1-D bool arrays.
@@ -195,6 +201,7 @@ def russellrao(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
 def sokalmichener(u, v):
     """
     Finds the Sokal-Michener dissimilarity between two 1-D bool arrays.
@@ -226,6 +233,7 @@ def sokalmichener(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
 def sokalsneath(u, v):
     """
     Finds the Sokal-Sneath dissimilarity between two 1-D bool arrays.
@@ -257,6 +265,7 @@ def sokalsneath(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
 def yule(u, v):
     """
     Finds the Yule dissimilarity between two 1-D bool arrays.
