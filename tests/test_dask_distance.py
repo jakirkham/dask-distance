@@ -78,7 +78,7 @@ def test_1d_bool_dist(funcname, seed, size, chunks):
     a_r = sp_func(a_u, a_v)
     d_r = da_func(d_u, d_v)
 
-    assert np.array(d_r) == a_r
+    assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
 
 
 @pytest.mark.parametrize(
@@ -120,4 +120,4 @@ def test_2d_bool_dist(funcname, seed, u_shape, u_chunks, v_shape, v_chunks):
     a_r = spdist.cdist(a_u, a_v, funcname)
     d_r = da_func(d_u, d_v)
 
-    assert np.allclose(np.array(d_r), a_r)
+    assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
