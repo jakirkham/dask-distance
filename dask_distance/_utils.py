@@ -16,11 +16,6 @@ def _bool_cmp_cnts(U, V):
     U = U.astype(bool)
     V = V.astype(bool)
 
-    if U.ndim != 2:
-        raise ValueError("U must be a 2-D array.")
-    if V.ndim != 2:
-        raise ValueError("V must be a 2-D array.")
-
     U_bc = dask.array.repeat(U[:, None], len(V), axis=1)
     V_bc = dask.array.repeat(V[None, :], len(U), axis=0)
 
@@ -53,6 +48,11 @@ def _bool_cmp_mtx_cnt(u, v):
     V = v
     if V.ndim == 1:
         V = V[None]
+
+    if U.ndim != 2:
+        raise ValueError("u must be a 1-D or 2-D array.")
+    if V.ndim != 2:
+        raise ValueError("v must be a 1-D or 2-D array.")
 
     uv_cmp_mtx_cnts = _bool_cmp_cnts(U, V)
 
