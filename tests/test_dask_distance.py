@@ -22,6 +22,7 @@ import dask_distance
         "correlation",
         "cosine",
         "euclidean",
+        "sqeuclidean",
     ]
 )
 @pytest.mark.parametrize("et, u, v", [
@@ -45,6 +46,7 @@ def test_1d_dist_err(funcname, et, u, v):
         "correlation",
         "cosine",
         "euclidean",
+        "sqeuclidean",
     ]
 )
 @pytest.mark.parametrize(
@@ -86,6 +88,7 @@ def test_1d_dist(funcname, seed, size, chunks):
         "correlation",
         "cosine",
         "euclidean",
+        "sqeuclidean",
     ]
 )
 @pytest.mark.parametrize(
