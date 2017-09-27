@@ -21,6 +21,7 @@ import dask_distance
         "cityblock",
         "correlation",
         "cosine",
+        "euclidean",
     ]
 )
 @pytest.mark.parametrize("et, u, v", [
@@ -43,6 +44,7 @@ def test_1d_dist_err(funcname, et, u, v):
         "cityblock",
         "correlation",
         "cosine",
+        "euclidean",
     ]
 )
 @pytest.mark.parametrize(
@@ -83,6 +85,7 @@ def test_1d_dist(funcname, seed, size, chunks):
         "cityblock",
         "correlation",
         "cosine",
+        "euclidean",
     ]
 )
 @pytest.mark.parametrize(
