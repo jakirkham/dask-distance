@@ -28,8 +28,8 @@ import dask_distance
 )
 @pytest.mark.parametrize("et, u, v", [
     (ValueError, np.zeros((2,), dtype=bool), np.zeros((3,), dtype=bool)),
-    (ValueError, np.zeros((1, 2,), dtype=bool), np.zeros((3,), dtype=bool)),
-    (ValueError, np.zeros((2,), dtype=bool), np.zeros((1, 3,), dtype=bool)),
+    (ValueError, np.zeros((1, 2, 1,), dtype=bool), np.zeros((3,), dtype=bool)),
+    (ValueError, np.zeros((2,), dtype=bool), np.zeros((1, 3, 1,), dtype=bool)),
 ])
 def test_1d_bool_dist_err(funcname, et, u, v):
     da_func = getattr(dask_distance, funcname)
