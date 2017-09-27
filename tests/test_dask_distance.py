@@ -103,7 +103,7 @@ def test_1d_bool_dist(funcname, seed, size, chunks):
 )
 @pytest.mark.parametrize(
     "u_shape, u_chunks, v_shape, v_chunks", [
-        ((3, 10), (1, 5), (3, 10), (1, 5)),
+        ((2, 10), (1, 5), (3, 10), (1, 5)),
     ]
 )
 def test_2d_bool_dist(funcname, seed, u_shape, u_chunks, v_shape, v_chunks):
