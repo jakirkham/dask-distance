@@ -29,7 +29,8 @@ def braycurtis(u, v):
 
     .. math::
 
-       \\frac{ \sum_{i} \lvert u_{i} - v_{i} \\rvert }{ \sum_{i} \lvert u_{i} + v_{i} \\rvert }
+       \\frac{ \sum_{i} \lvert u_{i} - v_{i} \\rvert }
+             { \sum_{i} \lvert u_{i} + v_{i} \\rvert }
 
     Args:
         u:           1-D array or collection of 1-D arrays
