@@ -1,3 +1,4 @@
+import functools
 import itertools
 
 import numpy
@@ -31,8 +32,35 @@ def _broadcast_uv(u, v):
     return U, V
 
 
-def _bool_cmp_cnts(u, v):
-    U, V = _broadcast_uv(u, v)
+def _unbroadcast_uv(u, v, result):
+    u = _compat._asarray(u)
+    v = _compat._asarray(v)
+
+    if v.ndim == 1:
+        result = result[:, 0]
+    if u.ndim == 1:
+        result = result[0]
+
+    return result
+
+
+def _broadcast_uv_wrapper(func):
+    @functools.wraps(func)
+    def _wrapped_broadcast_uv(u, v):
+        U, V = _broadcast_uv(u, v)
+
+        result = func(U, V)
+
+        result = _unbroadcast_uv(u, v, result)
+
+        return result
+
+    return _wrapped_broadcast_uv
+
+
+def _bool_cmp_cnts(U, V):
+    U = _compat._asarray(U)
+    V = _compat._asarray(V)
 
     U = U.astype(bool)
     V = V.astype(bool)
@@ -53,10 +81,4 @@ def _bool_cmp_cnts(u, v):
         UV_cmp_cnts = UV_cmp_cnts2
     UV_cmp_cnts = UV_cmp_cnts[()]
 
-    uv_cmp_cnts = UV_cmp_cnts
-    if v.ndim == 1:
-        uv_cmp_cnts = uv_cmp_cnts[:, :, :, 0]
-    if u.ndim == 1:
-        uv_cmp_cnts = uv_cmp_cnts[:, :, 0]
-
-    return uv_cmp_cnts
+    return UV_cmp_cnts
