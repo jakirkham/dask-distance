@@ -217,6 +217,31 @@ def euclidean(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
+def sqeuclidean(u, v):
+    """
+    Finds the squared Euclidean distance between two 1-D arrays.
+
+    .. math::
+
+       \lVert u - v \\rVert_{2}^{2}
+
+    Args:
+        u:           1-D array or collection of 1-D arrays
+        v:           1-D array or collection of 1-D arrays
+
+    Returns:
+        float:       squared Euclidean distance
+    """
+
+    u = u.astype(float)
+    v = v.astype(float)
+
+    result = (abs(u - v) ** 2).sum(axis=-1)
+
+    return result
+
+
 #####################################################
 #                                                   #
 #  Boolean vector distance/dissimilarity functions  #
