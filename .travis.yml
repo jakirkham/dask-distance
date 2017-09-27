@@ -33,11 +33,14 @@ install:
   # Install the package and dependencies.
   - pip install -e .
 
-# command to run tests, e.g. python setup.py test
 script:
+  # Run our test suite and report coverage.
   - coverage erase
   - coverage run --source . setup.py test
   - coverage report -m
+
+  # Do some basic linting of the code.
+  - flake8 .
 
 # Report coverage
 after_success:
