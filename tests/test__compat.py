@@ -6,7 +6,6 @@ import pytest
 
 import numpy as np
 
-import dask
 import dask.array as da
 import dask.array.utils as dau
 

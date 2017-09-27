@@ -44,7 +44,9 @@ cmdclasses.update(versioneer.get_cmdclass())
 setup(
     name="dask-distance",
     version=versioneer.get_version(),
-    description="Distance computations with Dask (akin to scipy.spatial.distance)",
+    description=(
+        "Distance computations with Dask (akin to scipy.spatial.distance)"
+    ),
     long_description=readme,
     author="John Kirkham",
     author_email="kirkhamj@janelia.hhmi.org",

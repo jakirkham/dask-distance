@@ -3,16 +3,14 @@
 
 from __future__ import division
 
-
-__author__ = """John Kirkham"""
-__email__ = "kirkhamj@janelia.hhmi.org"
+from . import _utils
 
 from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
 
-
-from . import _utils
+__author__ = """John Kirkham"""
+__email__ = "kirkhamj@janelia.hhmi.org"
 
 
 #######################################
