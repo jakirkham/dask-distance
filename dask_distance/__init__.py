@@ -48,6 +48,32 @@ def braycurtis(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
+def canberra(u, v):
+    """
+    Finds the Canberra distance between two 1-D arrays.
+
+    .. math::
+
+       \sum_{i} \\frac{ \lvert u_{i} - v_{i} \\rvert }
+                      { \lvert u_{i} \\rvert + \lvert v_{i} \\rvert }
+
+    Args:
+        u:           1-D array or collection of 1-D arrays
+        v:           1-D array or collection of 1-D arrays
+
+    Returns:
+        float:       Canberra distance
+    """
+
+    u = u.astype(float)
+    v = v.astype(float)
+
+    result = (abs(u - v) / (abs(u) + abs(v))).sum(axis=-1)
+
+    return result
+
+
 #####################################################
 #                                                   #
 #  Boolean vector distance/dissimilarity functions  #
