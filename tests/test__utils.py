@@ -11,7 +11,7 @@ import numpy as np
 import dask_distance._utils
 
 
-def test_import_toplevel():
+def test__bool_cmp_mtx_cnt():
     u = np.array([0, 0, 0, 1, 1, 1, 1, 1, 1, 1], dtype=bool)
     v = np.array([0, 1, 1, 0, 0, 0, 1, 1, 1, 1], dtype=bool)
 
