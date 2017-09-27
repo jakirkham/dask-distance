@@ -32,6 +32,18 @@ def _broadcast_uv(u, v):
     return U, V
 
 
+def _unbroadcast_uv(u, v, result):
+    u = _compat._asarray(u)
+    v = _compat._asarray(v)
+
+    if v.ndim == 1:
+        result = result[:, 0]
+    if u.ndim == 1:
+        result = result[0]
+
+    return result
+
+
 def _broadcast_uv_wrapper(func):
     @functools.wraps(func)
     def _wrapped_broadcast_uv(u, v):
@@ -39,10 +51,7 @@ def _broadcast_uv_wrapper(func):
 
         result = func(U, V)
 
-        if v.ndim == 1:
-            result = result[:, 0]
-        if u.ndim == 1:
-            result = result[0]
+        result = _unbroadcast_uv(u, v, result)
 
         return result
 
