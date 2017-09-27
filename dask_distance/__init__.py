@@ -206,7 +206,7 @@ def euclidean(u, v):
         v:           1-D array or collection of 1-D arrays
 
     Returns:
-        float:       Cosine distance
+        float:       Euclidean distance
     """
 
     u = u.astype(float)
