@@ -37,6 +37,21 @@ def test__broadcast_uv():
     assert U.shape == V.shape
 
 
+def test__unbroadcast_uv():
+    u = np.array([0, 0, 0, 1, 1, 1, 1, 1, 1, 1])
+    v = np.array([0, 1, 1, 0, 0, 0, 1, 1, 1, 1])
+
+    U, V = dask_distance._utils._broadcast_uv(u, v)
+
+    result = U + V
+
+    result = dask_distance._utils._unbroadcast_uv(u, v, result)
+
+    assert isinstance(result, da.core.Array)
+
+    assert result.shape == u.shape
+
+
 @pytest.mark.parametrize("et, u, v", [
     (ValueError, np.zeros((2,), dtype=bool), np.zeros((3,), dtype=bool)),
 ])
