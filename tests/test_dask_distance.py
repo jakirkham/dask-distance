@@ -26,6 +26,29 @@ import dask_distance
         "yule",
     ]
 )
+@pytest.mark.parametrize("et, u, v", [
+    (ValueError, np.zeros((2,), dtype=bool), np.zeros((3,), dtype=bool)),
+])
+def test_1d_bool_dist_err(funcname, et, u, v):
+    da_func = getattr(dask_distance, funcname)
+
+    with pytest.raises(et):
+        da_func(u, v)
+
+
+@pytest.mark.parametrize(
+    "funcname", [
+        "dice",
+        "hamming",
+        "jaccard",
+        "kulsinski",
+        "rogerstanimoto",
+        "russellrao",
+        "sokalmichener",
+        "sokalsneath",
+        "yule",
+    ]
+)
 @pytest.mark.parametrize(
     "seed", [
         0,
