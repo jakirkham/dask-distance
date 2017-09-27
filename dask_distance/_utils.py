@@ -9,7 +9,7 @@ from . import _compat
 from . import _pycompat
 
 
-def _bool_cmp_cnts(u, v):
+def _broadcast_uv(u, v):
     u = _compat._asarray(u)
     v = _compat._asarray(v)
 
@@ -27,6 +27,12 @@ def _bool_cmp_cnts(u, v):
 
     U = dask.array.repeat(U[:, None], len(V), axis=1)
     V = dask.array.repeat(V[None, :], len(U), axis=0)
+
+    return U, V
+
+
+def _bool_cmp_cnts(u, v):
+    U, V = _broadcast_uv(u, v)
 
     U = U.astype(bool)
     V = V.astype(bool)
