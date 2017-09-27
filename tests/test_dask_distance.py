@@ -102,18 +102,18 @@ def test_1d_bool_dist(funcname, seed, size, chunks):
     ]
 )
 @pytest.mark.parametrize(
-    "size, chunks", [
-        ((3, 10), (1, 5)),
+    "u_shape, u_chunks, v_shape, v_chunks", [
+        ((3, 10), (1, 5), (3, 10), (1, 5)),
     ]
 )
-def test_2d_bool_dist(funcname, seed, size, chunks):
+def test_2d_bool_dist(funcname, seed, u_shape, u_chunks, v_shape, v_chunks):
     np.random.seed(seed)
 
-    a_u = np.random.randint(0, 2, size, dtype=bool)
-    a_v = np.random.randint(0, 2, size, dtype=bool)
+    a_u = np.random.randint(0, 2, u_shape, dtype=bool)
+    a_v = np.random.randint(0, 2, v_shape, dtype=bool)
 
-    d_u = da.from_array(a_u, chunks=chunks)
-    d_v = da.from_array(a_v, chunks=chunks)
+    d_u = da.from_array(a_u, chunks=u_chunks)
+    d_v = da.from_array(a_v, chunks=v_chunks)
 
     da_func = getattr(dask_distance, funcname)
 
