@@ -49,7 +49,10 @@ def test__bool_cmp_cnts_nd():
     u = np.array([[0, 0, 0, 1, 1, 1, 1, 1, 1, 1]], dtype=bool)
     v = np.array([[0, 1, 1, 0, 0, 0, 1, 1, 1, 1]], dtype=bool)
 
-    uv_cmp_mtx = dask_distance._utils._bool_cmp_cnts(u, v)
+    uv_cmp_mtx = dask_distance._utils._bool_cmp_cnts(
+        np.repeat(u[:, None], len(v), axis=1),
+        np.repeat(v[None], len(u), axis=0)
+    )
 
     uv_cmp_mtx_exp = np.array([[[[1]], [[2]]], [[[3]], [[4]]]], dtype=float)
 
