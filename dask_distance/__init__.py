@@ -194,6 +194,31 @@ def cosine(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
+def euclidean(u, v):
+    """
+    Finds the Euclidean distance between two 1-D arrays.
+
+    .. math::
+
+       \lVert u - v \\rVert_{2}
+
+    Args:
+        u:           1-D array or collection of 1-D arrays
+        v:           1-D array or collection of 1-D arrays
+
+    Returns:
+        float:       Cosine distance
+    """
+
+    u = u.astype(float)
+    v = v.astype(float)
+
+    result = (abs(u - v) ** 2).sum(axis=-1) ** 0.5
+
+    return result
+
+
 #####################################################
 #                                                   #
 #  Boolean vector distance/dissimilarity functions  #
