@@ -12,6 +12,15 @@ import dask_distance._utils
 
 
 @pytest.mark.parametrize("et, u, v", [
+    (ValueError, np.zeros((1, 2, 1,), dtype=bool), np.zeros((2,), dtype=bool)),
+    (ValueError, np.zeros((2,), dtype=bool), np.zeros((1, 2, 1,), dtype=bool)),
+])
+def test__broadcast_uv_err(et, u, v):
+    with pytest.raises(et):
+        dask_distance._utils._broadcast_uv(u, v)
+
+
+@pytest.mark.parametrize("et, u, v", [
     (ValueError, np.zeros((2,), dtype=bool), np.zeros((3,), dtype=bool)),
     (ValueError, np.zeros((1, 2, 1,), dtype=bool), np.zeros((2,), dtype=bool)),
     (ValueError, np.zeros((2,), dtype=bool), np.zeros((1, 2, 1,), dtype=bool)),
