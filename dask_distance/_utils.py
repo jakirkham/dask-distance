@@ -9,6 +9,28 @@ from . import _compat
 from . import _pycompat
 
 
+def _broadcast_uv(u, v):
+    u = _compat._asarray(u)
+    v = _compat._asarray(v)
+
+    U = u
+    if U.ndim == 1:
+        U = U[None]
+    V = v
+    if V.ndim == 1:
+        V = V[None]
+
+    if U.ndim != 2:
+        raise ValueError("u must be a 1-D or 2-D array.")
+    if V.ndim != 2:
+        raise ValueError("v must be a 1-D or 2-D array.")
+
+    U = dask.array.repeat(U[:, None], len(V), axis=1)
+    V = dask.array.repeat(V[None, :], len(U), axis=0)
+
+    return U, V
+
+
 def _bool_cmp_cnts(u, v):
     u = _compat._asarray(u)
     v = _compat._asarray(v)
