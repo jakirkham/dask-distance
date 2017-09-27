@@ -15,6 +15,13 @@ del get_versions
 from . import _utils
 
 
+#####################################################
+#                                                   #
+#  Boolean vector distance/dissimilarity functions  #
+#                                                   #
+#####################################################
+
+
 @_utils._broadcast_uv_wrapper
 def dice(u, v):
     """
