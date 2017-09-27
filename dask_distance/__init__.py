@@ -15,6 +15,38 @@ del get_versions
 from . import _utils
 
 
+#######################################
+#                                     #
+#  Numeric vector distance functions  #
+#                                     #
+#######################################
+
+
+@_utils._broadcast_uv_wrapper
+def braycurtis(u, v):
+    """
+    Finds the Bray-Curtis distance between two 1-D arrays.
+
+    .. math::
+
+       \\frac{ \sum_{i} \lvert u_{i} - v_{i} \\rvert }{ \sum_{i} \lvert u_{i} + v_{i} \\rvert }
+
+    Args:
+        u:           1-D array or collection of 1-D arrays
+        v:           1-D array or collection of 1-D arrays
+
+    Returns:
+        float:       Bray-Curtis distance
+    """
+
+    u = u.astype(float)
+    v = v.astype(float)
+
+    result = abs(u - v).sum(axis=-1) / abs(u + v).sum(axis=-1)
+
+    return result
+
+
 #####################################################
 #                                                   #
 #  Boolean vector distance/dissimilarity functions  #
