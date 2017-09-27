@@ -9,9 +9,21 @@ from . import _compat
 from . import _pycompat
 
 
-def _bool_cmp_cnts(U, V):
-    U = _compat._asarray(U)
-    V = _compat._asarray(V)
+def _bool_cmp_cnts(u, v):
+    u = _compat._asarray(u)
+    v = _compat._asarray(v)
+
+    U = u
+    if U.ndim == 1:
+        U = U[None]
+    V = v
+    if V.ndim == 1:
+        V = V[None]
+
+    if U.ndim != 2:
+        raise ValueError("u must be a 1-D or 2-D array.")
+    if V.ndim != 2:
+        raise ValueError("v must be a 1-D or 2-D array.")
 
     U = U.astype(bool)
     V = V.astype(bool)
@@ -35,30 +47,10 @@ def _bool_cmp_cnts(U, V):
         UV_cmp_cnts = UV_cmp_cnts2
     UV_cmp_cnts = UV_cmp_cnts[()]
 
-    return UV_cmp_cnts
-
-
-def _bool_cmp_mtx_cnt(u, v):
-    u = _compat._asarray(u)
-    v = _compat._asarray(v)
-
-    U = u
-    if U.ndim == 1:
-        U = U[None]
-    V = v
-    if V.ndim == 1:
-        V = V[None]
-
-    if U.ndim != 2:
-        raise ValueError("u must be a 1-D or 2-D array.")
-    if V.ndim != 2:
-        raise ValueError("v must be a 1-D or 2-D array.")
-
-    uv_cmp_mtx_cnts = _bool_cmp_cnts(U, V)
-
+    uv_cmp_cnts = UV_cmp_cnts
     if v.ndim == 1:
-        uv_cmp_mtx_cnts = uv_cmp_mtx_cnts[:, :, :, 0]
+        uv_cmp_cnts = uv_cmp_cnts[:, :, :, 0]
     if u.ndim == 1:
-        uv_cmp_mtx_cnts = uv_cmp_mtx_cnts[:, :, 0]
+        uv_cmp_cnts = uv_cmp_cnts[:, :, 0]
 
-    return uv_cmp_mtx_cnts
+    return uv_cmp_cnts
