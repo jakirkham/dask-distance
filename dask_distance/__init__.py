@@ -26,8 +26,8 @@ def dice(u, v):
     where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
 
     Args:
-        u:           1-D bool array
-        v:           1-D bool array
+        u:           1-D bool array or collection of 1-D bool arrays
+        v:           1-D bool array or collection of 1-D bool arrays
 
     Returns:
         float:       Dice dissimilarity
@@ -56,8 +56,8 @@ def hamming(u, v):
     where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
 
     Args:
-        u:           1-D bool array
-        v:           1-D bool array
+        u:           1-D bool array or collection of 1-D bool arrays
+        v:           1-D bool array or collection of 1-D bool arrays
 
     Returns:
         float:       Hamming distance
@@ -83,8 +83,8 @@ def jaccard(u, v):
     where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
 
     Args:
-        u:           1-D bool array
-        v:           1-D bool array
+        u:           1-D bool array or collection of 1-D bool arrays
+        v:           1-D bool array or collection of 1-D bool arrays
 
     Returns:
         float:       Jaccard-Needham dissimilarity
@@ -114,8 +114,8 @@ def kulsinski(u, v):
     where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
 
     Args:
-        u:           1-D bool array
-        v:           1-D bool array
+        u:           1-D bool array or collection of 1-D bool arrays
+        v:           1-D bool array or collection of 1-D bool arrays
 
     Returns:
         float:       Kulsinski dissimilarity
@@ -145,8 +145,8 @@ def rogerstanimoto(u, v):
     where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
 
     Args:
-        u:           1-D bool array
-        v:           1-D bool array
+        u:           1-D bool array or collection of 1-D bool arrays
+        v:           1-D bool array or collection of 1-D bool arrays
 
     Returns:
         float:       Rogers-Tanimoto dissimilarity
@@ -176,8 +176,8 @@ def russellrao(u, v):
     where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
 
     Args:
-        u:           1-D bool array
-        v:           1-D bool array
+        u:           1-D bool array or collection of 1-D bool arrays
+        v:           1-D bool array or collection of 1-D bool arrays
 
     Returns:
         float:       Russell-Rao dissimilarity
@@ -207,8 +207,8 @@ def sokalmichener(u, v):
     where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
 
     Args:
-        u:           1-D bool array
-        v:           1-D bool array
+        u:           1-D bool array or collection of 1-D bool arrays
+        v:           1-D bool array or collection of 1-D bool arrays
 
     Returns:
         float:       Sokal-Michener dissimilarity
@@ -238,8 +238,8 @@ def sokalsneath(u, v):
     where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
 
     Args:
-        u:           1-D bool array
-        v:           1-D bool array
+        u:           1-D bool array or collection of 1-D bool arrays
+        v:           1-D bool array or collection of 1-D bool arrays
 
     Returns:
         float:       Sokal-Sneath dissimilarity
@@ -269,8 +269,8 @@ def yule(u, v):
     where :math:`c_{XY} = \sum_{i} \delta_{u_{i} X} \delta_{v_{i} Y}`
 
     Args:
-        u:           1-D bool array
-        v:           1-D bool array
+        u:           1-D bool array or collection of 1-D bool arrays
+        v:           1-D bool array or collection of 1-D bool arrays
 
     Returns:
         float:       Yule dissimilarity

@@ -28,8 +28,8 @@ import dask_distance
 )
 @pytest.mark.parametrize("et, u, v", [
     (ValueError, np.zeros((2,), dtype=bool), np.zeros((3,), dtype=bool)),
-    (ValueError, np.zeros((1, 2,), dtype=bool), np.zeros((3,), dtype=bool)),
-    (ValueError, np.zeros((2,), dtype=bool), np.zeros((1, 3,), dtype=bool)),
+    (ValueError, np.zeros((1, 2, 1,), dtype=bool), np.zeros((3,), dtype=bool)),
+    (ValueError, np.zeros((2,), dtype=bool), np.zeros((1, 3, 1,), dtype=bool)),
 ])
 def test_1d_bool_dist_err(funcname, et, u, v):
     da_func = getattr(dask_distance, funcname)
@@ -79,3 +79,45 @@ def test_1d_bool_dist(funcname, seed, size, chunks):
     d_r = da_func(d_u, d_v)
 
     assert np.array(d_r) == a_r
+
+
+@pytest.mark.parametrize(
+    "funcname", [
+        "dice",
+        "hamming",
+        "jaccard",
+        "kulsinski",
+        "rogerstanimoto",
+        "russellrao",
+        "sokalmichener",
+        "sokalsneath",
+        "yule",
+    ]
+)
+@pytest.mark.parametrize(
+    "seed", [
+        0,
+        137,
+        34,
+    ]
+)
+@pytest.mark.parametrize(
+    "size, chunks", [
+        ((3, 10), (1, 5)),
+    ]
+)
+def test_2d_bool_dist(funcname, seed, size, chunks):
+    np.random.seed(seed)
+
+    a_u = np.random.randint(0, 2, size, dtype=bool)
+    a_v = np.random.randint(0, 2, size, dtype=bool)
+
+    d_u = da.from_array(a_u, chunks=chunks)
+    d_v = da.from_array(a_v, chunks=chunks)
+
+    da_func = getattr(dask_distance, funcname)
+
+    a_r = spdist.cdist(a_u, a_v, funcname)
+    d_r = da_func(d_u, d_v)
+
+    assert np.allclose(np.array(d_r), a_r)
