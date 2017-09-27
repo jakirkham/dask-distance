@@ -124,6 +124,44 @@ def cityblock(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
+def correlation(u, v):
+    """
+    Finds the correlation distance between two 1-D arrays.
+
+    .. math::
+
+       1 - \\frac{ (u - \\bar{u}) \cdot (v - \\bar{v}) }
+                 {
+                    \lVert u - \\bar{u} \\rVert_{2}
+                    \lVert v - \\bar{v} \\rVert_{2}
+                 }
+
+    Args:
+        u:           1-D array or collection of 1-D arrays
+        v:           1-D array or collection of 1-D arrays
+
+    Returns:
+        float:       correlation distance
+    """
+
+    u = u.astype(float)
+    v = v.astype(float)
+
+    u_mean = u.mean(axis=-1, keepdims=True)
+    v_mean = v.mean(axis=-1, keepdims=True)
+
+    result = 1 - (
+        ((u - u_mean) * (v - v_mean)).sum(axis=-1) /
+        (
+            (abs(u - u_mean) ** 2).sum(axis=-1) ** 0.5 *
+            (abs(v - v_mean) ** 2).sum(axis=-1) ** 0.5
+        )
+    )
+
+    return result
+
+
 #####################################################
 #                                                   #
 #  Boolean vector distance/dissimilarity functions  #
