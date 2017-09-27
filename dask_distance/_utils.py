@@ -25,14 +25,14 @@ def _bool_cmp_cnts(u, v):
     if V.ndim != 2:
         raise ValueError("v must be a 1-D or 2-D array.")
 
+    U = dask.array.repeat(U[:, None], len(V), axis=1)
+    V = dask.array.repeat(V[None, :], len(U), axis=0)
+
     U = U.astype(bool)
     V = V.astype(bool)
 
-    U_bc = dask.array.repeat(U[:, None], len(V), axis=1)
-    V_bc = dask.array.repeat(V[None, :], len(U), axis=0)
-
-    U_01 = [~U_bc, U_bc]
-    V_01 = [~V_bc, V_bc]
+    U_01 = [~U, U]
+    V_01 = [~V, V]
 
     UV_cmp_cnts = numpy.empty((2, 2), dtype=object)
     UV_ranges = [_pycompat.irange(e) for e in UV_cmp_cnts.shape]
