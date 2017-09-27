@@ -39,6 +39,9 @@ script:
   - coverage run --source . setup.py test
   - coverage report -m
 
+  # Do some basic linting of the code.
+  - flake8 .
+
 # Report coverage
 after_success:
   - source activate root
