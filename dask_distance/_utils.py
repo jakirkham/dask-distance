@@ -8,6 +8,11 @@ def _bool_cmp_mtx_cnt(u, v):
     u = _compat._asarray(u)
     v = _compat._asarray(v)
 
+    if u.ndim != 1:
+        raise ValueError("u must be a 1-D array.")
+    if v.ndim != 1:
+        raise ValueError("v must be a 1-D array.")
+
     u_1 = u.astype(bool)
     v_1 = v.astype(bool)
     u_0 = ~u_1
