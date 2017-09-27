@@ -1,3 +1,4 @@
+import functools
 import itertools
 
 import numpy
@@ -29,6 +30,23 @@ def _broadcast_uv(u, v):
     V = dask.array.repeat(V[None, :], len(U), axis=0)
 
     return U, V
+
+
+def _broadcast_uv_wrapper(func):
+    @functools.wraps(func)
+    def _wrapped_broadcast_uv(u, v):
+        U, V = _broadcast_uv(u, v)
+
+        result = func(U, V)
+
+        if v.ndim == 1:
+            result = result[:, 0]
+        if u.ndim == 1:
+            result = result[0]
+
+        return result
+
+    return _wrapped_broadcast_uv
 
 
 def _bool_cmp_cnts(u, v):
