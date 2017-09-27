@@ -13,6 +13,8 @@ import dask_distance._utils
 
 @pytest.mark.parametrize("et, u, v", [
     (ValueError, np.zeros((2,), dtype=bool), np.zeros((3,), dtype=bool)),
+    (ValueError, np.zeros((1, 2,), dtype=bool), np.zeros((2,), dtype=bool)),
+    (ValueError, np.zeros((2,), dtype=bool), np.zeros((1, 2,), dtype=bool)),
 ])
 def test__bool_cmp_mtx_cnt_err(et, u, v):
     with pytest.raises(et):
