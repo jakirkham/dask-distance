@@ -41,13 +41,13 @@ def dice(u, v):
         float:       Dice dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_cnts(u, v)
+    uv_cmp = _utils._bool_cmp_cnts(u, v)
 
-    uv_mismtch = uv_mtx[1, 0] + uv_mtx[0, 1]
+    uv_mismtch = uv_cmp[1, 0] + uv_cmp[0, 1]
 
     result = (
         (uv_mismtch) /
-        (2 * uv_mtx[1, 1] + uv_mismtch)
+        (2 * uv_cmp[1, 1] + uv_mismtch)
     )
 
     return result
@@ -72,10 +72,10 @@ def hamming(u, v):
         float:       Hamming distance
     """
 
-    uv_mtx = _utils._bool_cmp_cnts(u, v)
+    uv_cmp = _utils._bool_cmp_cnts(u, v)
 
     result = (
-        (uv_mtx[1, 0] + uv_mtx[0, 1]) / (uv_mtx.sum(axis=(0, 1)))
+        (uv_cmp[1, 0] + uv_cmp[0, 1]) / (uv_cmp.sum(axis=(0, 1)))
     )
 
     return result
@@ -100,13 +100,13 @@ def jaccard(u, v):
         float:       Jaccard-Needham dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_cnts(u, v)
+    uv_cmp = _utils._bool_cmp_cnts(u, v)
 
-    uv_mismtch = uv_mtx[1, 0] + uv_mtx[0, 1]
+    uv_mismtch = uv_cmp[1, 0] + uv_cmp[0, 1]
 
     result = (
         (uv_mismtch) /
-        (uv_mtx[1, 1] + uv_mismtch)
+        (uv_cmp[1, 1] + uv_mismtch)
     )
 
     return result
@@ -132,13 +132,13 @@ def kulsinski(u, v):
         float:       Kulsinski dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_cnts(u, v)
+    uv_cmp = _utils._bool_cmp_cnts(u, v)
 
-    result_numer = 2 * (uv_mtx[1, 0] + uv_mtx[0, 1]) + uv_mtx[0, 0]
+    result_numer = 2 * (uv_cmp[1, 0] + uv_cmp[0, 1]) + uv_cmp[0, 0]
 
     result = (
         (result_numer) /
-        (uv_mtx[1, 1] + result_numer)
+        (uv_cmp[1, 1] + result_numer)
     )
 
     return result
@@ -164,13 +164,13 @@ def rogerstanimoto(u, v):
         float:       Rogers-Tanimoto dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_cnts(u, v)
+    uv_cmp = _utils._bool_cmp_cnts(u, v)
 
-    result_numer = 2 * (uv_mtx[1, 0] + uv_mtx[0, 1])
+    result_numer = 2 * (uv_cmp[1, 0] + uv_cmp[0, 1])
 
     result = (
         (result_numer) /
-        (uv_mtx[1, 1] + result_numer + uv_mtx[0, 0])
+        (uv_cmp[1, 1] + result_numer + uv_cmp[0, 0])
     )
 
     return result
@@ -196,13 +196,13 @@ def russellrao(u, v):
         float:       Russell-Rao dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_cnts(u, v)
+    uv_cmp = _utils._bool_cmp_cnts(u, v)
 
-    result_numer = uv_mtx[1, 0] + uv_mtx[0, 1] + uv_mtx[0, 0]
+    result_numer = uv_cmp[1, 0] + uv_cmp[0, 1] + uv_cmp[0, 0]
 
     result = (
         (result_numer) /
-        (uv_mtx[1, 1] + result_numer)
+        (uv_cmp[1, 1] + result_numer)
     )
 
     return result
@@ -228,13 +228,13 @@ def sokalmichener(u, v):
         float:       Sokal-Michener dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_cnts(u, v)
+    uv_cmp = _utils._bool_cmp_cnts(u, v)
 
-    result_numer = 2 * (uv_mtx[1, 0] + uv_mtx[0, 1])
+    result_numer = 2 * (uv_cmp[1, 0] + uv_cmp[0, 1])
 
     result = (
         (result_numer) /
-        (uv_mtx[1, 1] + result_numer + uv_mtx[0, 0])
+        (uv_cmp[1, 1] + result_numer + uv_cmp[0, 0])
     )
 
     return result
@@ -260,13 +260,13 @@ def sokalsneath(u, v):
         float:       Sokal-Sneath dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_cnts(u, v)
+    uv_cmp = _utils._bool_cmp_cnts(u, v)
 
-    result_numer = 2 * (uv_mtx[1, 0] + uv_mtx[0, 1])
+    result_numer = 2 * (uv_cmp[1, 0] + uv_cmp[0, 1])
 
     result = (
         (result_numer) /
-        (uv_mtx[1, 1] + result_numer)
+        (uv_cmp[1, 1] + result_numer)
     )
 
     return result
@@ -292,13 +292,13 @@ def yule(u, v):
         float:       Yule dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_cnts(u, v)
+    uv_cmp = _utils._bool_cmp_cnts(u, v)
 
-    uv_prod_mismtch = uv_mtx[1, 0] * uv_mtx[0, 1]
+    uv_prod_mismtch = uv_cmp[1, 0] * uv_cmp[0, 1]
 
     result = (
         (2 * uv_prod_mismtch) /
-        (uv_mtx[1, 1] * uv_mtx[0, 0] + uv_prod_mismtch)
+        (uv_cmp[1, 1] * uv_cmp[0, 0] + uv_prod_mismtch)
     )
 
     return result
