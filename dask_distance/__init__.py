@@ -33,7 +33,7 @@ def dice(u, v):
         float:       Dice dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+    uv_mtx = _utils._bool_cmp_cnts(u, v)
 
     uv_mismtch = uv_mtx[1, 0] + uv_mtx[0, 1]
 
@@ -63,7 +63,7 @@ def hamming(u, v):
         float:       Hamming distance
     """
 
-    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+    uv_mtx = _utils._bool_cmp_cnts(u, v)
 
     result = (
         (uv_mtx[1, 0] + uv_mtx[0, 1]) / (uv_mtx.sum(axis=(0, 1)))
@@ -90,7 +90,7 @@ def jaccard(u, v):
         float:       Jaccard-Needham dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+    uv_mtx = _utils._bool_cmp_cnts(u, v)
 
     uv_mismtch = uv_mtx[1, 0] + uv_mtx[0, 1]
 
@@ -121,7 +121,7 @@ def kulsinski(u, v):
         float:       Kulsinski dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+    uv_mtx = _utils._bool_cmp_cnts(u, v)
 
     result_numer = 2 * (uv_mtx[1, 0] + uv_mtx[0, 1]) + uv_mtx[0, 0]
 
@@ -152,7 +152,7 @@ def rogerstanimoto(u, v):
         float:       Rogers-Tanimoto dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+    uv_mtx = _utils._bool_cmp_cnts(u, v)
 
     result_numer = 2 * (uv_mtx[1, 0] + uv_mtx[0, 1])
 
@@ -183,7 +183,7 @@ def russellrao(u, v):
         float:       Russell-Rao dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+    uv_mtx = _utils._bool_cmp_cnts(u, v)
 
     result_numer = uv_mtx[1, 0] + uv_mtx[0, 1] + uv_mtx[0, 0]
 
@@ -214,7 +214,7 @@ def sokalmichener(u, v):
         float:       Sokal-Michener dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+    uv_mtx = _utils._bool_cmp_cnts(u, v)
 
     result_numer = 2 * (uv_mtx[1, 0] + uv_mtx[0, 1])
 
@@ -245,7 +245,7 @@ def sokalsneath(u, v):
         float:       Sokal-Sneath dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+    uv_mtx = _utils._bool_cmp_cnts(u, v)
 
     result_numer = 2 * (uv_mtx[1, 0] + uv_mtx[0, 1])
 
@@ -276,7 +276,7 @@ def yule(u, v):
         float:       Yule dissimilarity
     """
 
-    uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
+    uv_mtx = _utils._bool_cmp_cnts(u, v)
 
     uv_prod_mismtch = uv_mtx[1, 0] * uv_mtx[0, 1]
 
