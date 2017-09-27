@@ -74,6 +74,31 @@ def canberra(u, v):
     return result
 
 
+@_utils._broadcast_uv_wrapper
+def chebyshev(u, v):
+    """
+    Finds the Chebyshev distance between two 1-D arrays.
+
+    .. math::
+
+       \max_{i} \lvert u_{i} - v_{i} \\rvert
+
+    Args:
+        u:           1-D array or collection of 1-D arrays
+        v:           1-D array or collection of 1-D arrays
+
+    Returns:
+        float:       Chebyshev distance
+    """
+
+    u = u.astype(float)
+    v = v.astype(float)
+
+    result = abs(u - v).max(axis=-1)
+
+    return result
+
+
 #####################################################
 #                                                   #
 #  Boolean vector distance/dissimilarity functions  #
