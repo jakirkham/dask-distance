@@ -66,7 +66,7 @@ def hamming(u, v):
     uv_mtx = _utils._bool_cmp_mtx_cnt(u, v)
 
     result = (
-        (uv_mtx[1, 0] + uv_mtx[0, 1]) / (uv_mtx.sum())
+        (uv_mtx[1, 0] + uv_mtx[0, 1]) / (uv_mtx.sum(axis=(0, 1)))
     )
 
     return result
