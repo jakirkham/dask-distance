@@ -78,7 +78,7 @@ def test_1d_bool_dist(funcname, seed, size, chunks):
     a_r = sp_func(a_u, a_v)
     d_r = da_func(d_u, d_v)
 
-    assert np.array(d_r) == a_r
+    assert np.array(d_r)[()] == a_r
 
 
 @pytest.mark.parametrize(
