@@ -58,6 +58,13 @@ def _broadcast_uv_wrapper(func):
     return _wrapped_broadcast_uv
 
 
+def _cdist_apply(U, V, metric):
+    result = numpy.empty(U.shape[:-1], dtype=float)
+    for i in itertools.product(*[_pycompat.irange(e) for e in result.shape]):
+        result[i] = metric(U[i], V[i])
+    return result
+
+
 def _bool_cmp_cnts(U, V):
     U = _compat._asarray(U)
     V = _compat._asarray(V)
