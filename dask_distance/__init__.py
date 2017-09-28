@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 
 
-from __future__ import division
+from __future__ import division, unicode_literals
 
+import dask
+import dask.array
+
+from . import _compat
 from . import _utils
 
 from ._version import get_versions
@@ -11,6 +15,82 @@ del get_versions
 
 __author__ = """John Kirkham"""
 __email__ = "kirkhamj@janelia.hhmi.org"
+
+
+#######################################
+#                                     #
+#  Distance matrix functions          #
+#                                     #
+#######################################
+
+
+def cdist(XA, XB, metric="euclidean"):
+    """
+    Finds the distance matrix using the metric on each pair of points.
+
+    Args:
+        XA:         2-D array of points
+        XB:         2-D array of points
+        metric:     string or callable
+
+    Returns:
+        array:      distance between each combination of points
+    """
+
+    func_mappings = {
+        "braycurtis": braycurtis,
+        "canberra": canberra,
+        "chebyshev": chebyshev,
+        "cityblock": cityblock,
+        "correlation": correlation,
+        "cosine": cosine,
+        "dice": dice,
+        "euclidean": euclidean,
+        "hamming": hamming,
+        "jaccard": jaccard,
+        "kulsinski": kulsinski,
+        "rogerstanimoto": rogerstanimoto,
+        "russellrao": russellrao,
+        "sokalmichener": sokalmichener,
+        "sokalsneath": sokalsneath,
+        "sqeuclidean": sqeuclidean,
+        "yule": yule,
+    }
+
+    XA = _compat._asarray(XA)
+    XB = _compat._asarray(XB)
+
+    result = None
+    if callable(metric):
+        XA_bc, XB_bc = _utils._broadcast_uv(XA, XB)
+
+        XA_bc = XA_bc.rechunk(XA_bc.chunks[:-1] + ((XA_bc.shape[-1],),))
+        XB_bc = XB_bc.rechunk(XB_bc.chunks[:-1] + ((XB_bc.shape[-1],),))
+
+        XA_bc = XA_bc.astype(float)
+        XB_bc = XB_bc.astype(float)
+
+        result = dask.array.atop(
+            _utils._cdist_apply, "ij",
+            XA_bc, "ijk",
+            XB_bc, "ijk",
+            dtype=float,
+            concatenate=True,
+            metric=metric
+        )
+
+        result = result.rechunk(XA.chunks[0:1] + XB.chunks[0:1])
+    else:
+        try:
+            metric = metric.decode("utf-8")
+        except AttributeError:
+            pass
+
+        metric = func_mappings[metric]
+
+        result = metric(XA, XB)
+
+    return result
 
 
 #######################################

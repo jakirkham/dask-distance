@@ -80,7 +80,7 @@ def test_1d_dist(funcname, seed, size, chunks):
 
 
 @pytest.mark.parametrize(
-    "funcname", [
+    "metric", [
         "braycurtis",
         "canberra",
         "chebyshev",
@@ -89,6 +89,7 @@ def test_1d_dist(funcname, seed, size, chunks):
         "cosine",
         "euclidean",
         "sqeuclidean",
+        lambda u, v: (abs(u - v) ** 3).sum() ** (1.0 / 3.0),
     ]
 )
 @pytest.mark.parametrize(
@@ -103,7 +104,7 @@ def test_1d_dist(funcname, seed, size, chunks):
         ((2, 10), (1, 5), (3, 10), (1, 5)),
     ]
 )
-def test_2d_dist(funcname, seed, u_shape, u_chunks, v_shape, v_chunks):
+def test_2d_cdist(metric, seed, u_shape, u_chunks, v_shape, v_chunks):
     np.random.seed(seed)
 
     a_u = 2 * np.random.random(u_shape) - 1
@@ -112,10 +113,8 @@ def test_2d_dist(funcname, seed, u_shape, u_chunks, v_shape, v_chunks):
     d_u = da.from_array(a_u, chunks=u_chunks)
     d_v = da.from_array(a_v, chunks=v_chunks)
 
-    da_func = getattr(dask_distance, funcname)
-
-    a_r = spdist.cdist(a_u, a_v, funcname)
-    d_r = da_func(d_u, d_v)
+    a_r = spdist.cdist(a_u, a_v, metric)
+    d_r = dask_distance.cdist(d_u, d_v, metric)
 
     assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
 
@@ -189,7 +188,7 @@ def test_1d_bool_dist(funcname, seed, size, chunks):
 
 
 @pytest.mark.parametrize(
-    "funcname", [
+    "metric", [
         "dice",
         "hamming",
         "jaccard",
@@ -199,6 +198,7 @@ def test_1d_bool_dist(funcname, seed, size, chunks):
         "sokalmichener",
         "sokalsneath",
         "yule",
+        lambda u, v: (abs(u - v) ** 3).sum() ** (1.0 / 3.0),
     ]
 )
 @pytest.mark.parametrize(
@@ -213,7 +213,7 @@ def test_1d_bool_dist(funcname, seed, size, chunks):
         ((2, 10), (1, 5), (3, 10), (1, 5)),
     ]
 )
-def test_2d_bool_dist(funcname, seed, u_shape, u_chunks, v_shape, v_chunks):
+def test_2d_bool_cdist(metric, seed, u_shape, u_chunks, v_shape, v_chunks):
     np.random.seed(seed)
 
     a_u = np.random.randint(0, 2, u_shape, dtype=bool)
@@ -222,9 +222,7 @@ def test_2d_bool_dist(funcname, seed, u_shape, u_chunks, v_shape, v_chunks):
     d_u = da.from_array(a_u, chunks=u_chunks)
     d_v = da.from_array(a_v, chunks=v_chunks)
 
-    da_func = getattr(dask_distance, funcname)
-
-    a_r = spdist.cdist(a_u, a_v, funcname)
-    d_r = da_func(d_u, d_v)
+    a_r = spdist.cdist(a_u, a_v, metric)
+    d_r = dask_distance.cdist(d_u, d_v, metric)
 
     assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
