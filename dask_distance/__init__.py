@@ -93,6 +93,35 @@ def cdist(XA, XB, metric="euclidean"):
     return result
 
 
+def pdist(X, metric="euclidean"):
+    """
+    Finds the pairwise condensed distance matrix using the metric.
+
+    Args:
+        X:          2-D array of points
+        metric:     string or callable
+
+    Returns:
+        array:      condensed distance between each pair
+
+    Note:
+        Tries to avoid redundant computations as much as possible.
+        However this is limited in its ability to do this based on
+        the chunk size of X (particularly along the first dimension).
+        Smaller chunks will increase savings though there may be
+        other tradeoffs.
+    """
+
+    result = cdist(X, X, metric)
+
+    result = dask.array.triu(result, 1)
+
+    indices = _compat._indices(result.shape, chunks=result.chunks)
+    result = result[indices[1] > indices[0]]
+
+    return result
+
+
 #######################################
 #                                     #
 #  Numeric vector distance functions  #

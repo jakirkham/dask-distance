@@ -120,6 +120,43 @@ def test_2d_cdist(metric, seed, u_shape, u_chunks, v_shape, v_chunks):
 
 
 @pytest.mark.parametrize(
+    "metric", [
+        "braycurtis",
+        "canberra",
+        "chebyshev",
+        "cityblock",
+        "correlation",
+        "cosine",
+        "euclidean",
+        "sqeuclidean",
+        lambda u, v: (abs(u - v) ** 3).sum() ** (1.0 / 3.0),
+    ]
+)
+@pytest.mark.parametrize(
+    "seed", [
+        0,
+        137,
+        34,
+    ]
+)
+@pytest.mark.parametrize(
+    "u_shape, u_chunks", [
+        ((3, 10), (1, 5)),
+    ]
+)
+def test_2d_pdist(metric, seed, u_shape, u_chunks):
+    np.random.seed(seed)
+
+    a_u = 2 * np.random.random(u_shape) - 1
+    d_u = da.from_array(a_u, chunks=u_chunks)
+
+    a_r = spdist.pdist(a_u, metric)
+    d_r = dask_distance.pdist(d_u, metric)
+
+    assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
+
+
+@pytest.mark.parametrize(
     "funcname", [
         "dice",
         "hamming",
@@ -224,5 +261,43 @@ def test_2d_bool_cdist(metric, seed, u_shape, u_chunks, v_shape, v_chunks):
 
     a_r = spdist.cdist(a_u, a_v, metric)
     d_r = dask_distance.cdist(d_u, d_v, metric)
+
+    assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
+
+
+@pytest.mark.parametrize(
+    "metric", [
+        "dice",
+        "hamming",
+        "jaccard",
+        "kulsinski",
+        "rogerstanimoto",
+        "russellrao",
+        "sokalmichener",
+        "sokalsneath",
+        "yule",
+        lambda u, v: (abs(u - v) ** 3).sum() ** (1.0 / 3.0),
+    ]
+)
+@pytest.mark.parametrize(
+    "seed", [
+        0,
+        137,
+        34,
+    ]
+)
+@pytest.mark.parametrize(
+    "u_shape, u_chunks", [
+        ((3, 10), (1, 5)),
+    ]
+)
+def test_2d_bool_pdist(metric, seed, u_shape, u_chunks):
+    np.random.seed(seed)
+
+    a_u = np.random.randint(0, 2, u_shape, dtype=bool)
+    d_u = da.from_array(a_u, chunks=u_chunks)
+
+    a_r = spdist.pdist(a_u, metric)
+    d_r = dask_distance.pdist(d_u, metric)
 
     assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
