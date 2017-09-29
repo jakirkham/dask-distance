@@ -87,3 +87,30 @@ def test_indicies():
     darr = dask_distance._compat._indices((2, 3), chunks=(1, 2))
     nparr = np.indices((2, 3))
     dau.assert_eq(darr, nparr)
+
+
+@pytest.mark.parametrize(
+    "shape, dtype, chunks",
+    [
+        ((10, 11, 12), int, (3, 5, 5)),
+        ((10, 11, 12), float, (3, 5, 5)),
+        ((10, 11, 12), float, (3, 2, 2)),
+        ((20, 17, 31), float, (6, 5, 10)),
+    ]
+)
+@pytest.mark.parametrize(
+    "seed",
+    [
+        153,
+    ]
+)
+def test_ravel(shape, dtype, chunks, seed):
+    np.random.random(seed)
+
+    a = np.random.randint(0, 10, shape).astype(dtype)
+    d = da.from_array(a, chunks=chunks)
+
+    r_a = np.ravel(a)
+    r_d = dask_distance._compat._ravel(d)
+
+    dau.assert_eq(r_d, r_a)

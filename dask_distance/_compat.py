@@ -89,3 +89,18 @@ def _indices(dimensions, dtype=int, chunks=None):
         )
 
     return grid
+
+
+def _ravel(a):
+    a = _asarray(a)
+
+    r = dask.array.atop(
+        numpy.ravel, (a.ndim + 1,),
+        a, tuple(range(0, a.ndim)),
+        dtype=a.dtype,
+        new_axes={(a.ndim + 1): a.size},
+        adjust_chunks={0: int(numpy.prod([c[0] for c in a.chunks]))},
+        concatenate=True
+    )
+
+    return r
