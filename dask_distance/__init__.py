@@ -408,7 +408,9 @@ def seuclidean(u, v, V):
 
     .. math::
 
-       \sqrt{\sum_{i} \left( \\frac{u_{i}^{2} - v_{i}^{2}}{V_{i}} \\right)}
+       \sqrt{\sum_{i} \left(
+           \\frac{\left( u_{i} - v_{i} \\right)^{2}}{V_{i}}
+       \\right)}
 
     Args:
         u:           1-D array or collection of 1-D arrays
