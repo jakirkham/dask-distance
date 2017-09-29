@@ -99,7 +99,7 @@ def _ravel(a):
         a, tuple(range(0, a.ndim)),
         dtype=a.dtype,
         new_axes={(a.ndim + 1): a.size},
-        adjust_chunks={0: int(numpy.prod([c[0] for c in a.chunks]))},
+        adjust_chunks={(a.ndim + 1): int(numpy.prod([c[0] for c in a.chunks]))},
         concatenate=True
     )
 
