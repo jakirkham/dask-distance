@@ -326,6 +326,37 @@ def euclidean(u, v):
     return result
 
 
+def minkowski(u, v, p):
+    """
+    Finds the Minkowski distance between two 1-D arrays.
+
+    .. math::
+
+       \left( \sum_{i} \lvert u_{i} - v_{i} \\rvert^{p} \\right)^{\\frac{1}{p}}
+
+    Args:
+        u:           1-D array or collection of 1-D arrays
+        v:           1-D array or collection of 1-D arrays
+        p:           degree of the norm to use
+
+    Returns:
+        float:       Minkowski distance
+    """
+
+    U, V = _utils._broadcast_uv(u, v)
+    p = _compat._asarray(p)
+
+    U = U.astype(float)
+    V = V.astype(float)
+    p = p.astype(float)
+
+    result = (abs(U - V) ** p).sum(axis=-1) ** (1 / p)
+
+    result = _utils._unbroadcast_uv(u, v, result)
+
+    return result
+
+
 @_utils._broadcast_uv_wrapper
 def sqeuclidean(u, v):
     """

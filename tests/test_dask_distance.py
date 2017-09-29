@@ -22,6 +22,8 @@ import dask_distance
         ("correlation", {}),
         ("cosine", {}),
         ("euclidean", {}),
+        ("minkowski", {"p": 3}),
+        ("minkowski", {"p": 1.4}),
         ("sqeuclidean", {}),
     ]
 )
@@ -46,6 +48,8 @@ def test_1d_dist_err(funcname, kw, et, u, v):
         ("correlation", {}),
         ("cosine", {}),
         ("euclidean", {}),
+        ("minkowski", {"p": 3}),
+        ("minkowski", {"p": 1.4}),
         ("sqeuclidean", {}),
     ]
 )
