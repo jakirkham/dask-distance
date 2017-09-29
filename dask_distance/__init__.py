@@ -334,6 +334,43 @@ def euclidean(u, v):
     return result
 
 
+def mahalanobis(u, v, VI):
+    """
+    Finds the Mahalanobis distance between two 1-D arrays.
+
+    .. math::
+
+       \sqrt{ (u - v) \cdot V^{-1} \cdot (u - v)^{T} }
+
+    Args:
+        u:           1-D array or collection of 1-D arrays
+        v:           1-D array or collection of 1-D arrays
+        V:           Inverse of the covariance matrix
+
+    Returns:
+        float:       Mahalanobis distance
+    """
+
+    VI = _compat._asarray(VI)
+    if VI.ndim != 2:
+        raise ValueError("VI must have a dimension of 2.")
+
+    U, V = _utils._broadcast_uv(u, v)
+
+    U = U.astype(float)
+    V = V.astype(float)
+    VI = VI.astype(float)
+
+    U_sub_V = U - V
+    result = dask.array.sqrt(
+        (dask.array.tensordot(U_sub_V, VI, axes=1) * U_sub_V).sum(axis=-1)
+    )
+
+    result = _utils._unbroadcast_uv(u, v, result)
+
+    return result
+
+
 def minkowski(u, v, p):
     """
     Finds the Minkowski distance between two 1-D arrays.

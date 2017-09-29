@@ -22,6 +22,7 @@ import dask_distance
         ("correlation", {}),
         ("cosine", {}),
         ("euclidean", {}),
+        ("mahalanobis", {"VI": 1}),
         ("minkowski", {"p": 3}),
         ("minkowski", {"p": 1.4}),
         ("seuclidean", {"V": 1}),
@@ -50,6 +51,7 @@ def test_1d_dist_err(funcname, kw, et, u, v):
         ("correlation", {}),
         ("cosine", {}),
         ("euclidean", {}),
+        ("mahalanobis", {}),
         ("minkowski", {"p": 3}),
         ("minkowski", {"p": 1.4}),
         ("seuclidean", {}),
@@ -82,7 +84,9 @@ def test_1d_dist(funcname, kw, seed, size, chunks):
     sp_func = getattr(spdist, funcname)
     da_func = getattr(dask_distance, funcname)
 
-    if funcname == "seuclidean":
+    if funcname == "mahalanobis":
+        kw["VI"] = 2 * np.random.random((size, size)) - 1
+    elif funcname == "seuclidean":
         kw["V"] = 2 * np.random.random((size,)) - 1
     elif funcname == "wminkowski":
         kw["w"] = 2 * np.random.random((size,)) - 1
