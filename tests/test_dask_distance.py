@@ -92,6 +92,8 @@ def test_1d_dist(funcname, kw, seed, size, chunks):
         ("correlation", {}),
         ("cosine", {}),
         ("euclidean", {}),
+        ("minkowski", {}),
+        ("minkowski", {"p": 3}),
         ("sqeuclidean", {}),
         (lambda u, v: (abs(u - v) ** 3).sum() ** (1.0 / 3.0), {}),
     ]
@@ -132,6 +134,8 @@ def test_2d_cdist(metric, kw, seed, u_shape, u_chunks, v_shape, v_chunks):
         ("correlation", {}),
         ("cosine", {}),
         ("euclidean", {}),
+        ("minkowski", {}),
+        ("minkowski", {"p": 3}),
         ("sqeuclidean", {}),
         (lambda u, v: (abs(u - v) ** 3).sum() ** (1.0 / 3.0), {}),
     ]
