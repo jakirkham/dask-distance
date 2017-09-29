@@ -129,7 +129,9 @@ def pdist(X, metric="euclidean", **kwargs):
     result = dask.array.triu(result, 1)
 
     indices = _compat._indices(result.shape, chunks=result.chunks)
-    result = _compat._ravel(result)[_compat._ravel(indices[1] > indices[0])]
+    mask = (indices[1] > indices[0])
+
+    result = _compat._ravel(result)[_compat._ravel(mask)]
 
     return result
 
