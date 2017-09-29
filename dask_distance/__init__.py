@@ -365,6 +365,44 @@ def minkowski(u, v, p):
     return result
 
 
+def seuclidean(u, v, V):
+    """
+    Finds the standardized Euclidean distance between two 1-D arrays.
+
+    .. math::
+
+       \sqrt{\sum_{i} \left( \\frac{u_{i}^{2} - v_{i}^{2}}{V_{i}} \\right)}
+
+    Args:
+        u:           1-D array or collection of 1-D arrays
+        v:           1-D array or collection of 1-D arrays
+        V:           1-D array of variances
+
+    Returns:
+        float:       standardized Euclidean
+    """
+
+    var = V
+    del V
+
+    var = _compat._asarray(var)
+    if var.ndim != 1:
+        raise ValueError("V must have a dimension of 1.")
+
+    U, V = _utils._broadcast_uv(u, v)
+    Var = var[None, None].repeat(U.shape[0], axis=0).repeat(U.shape[1], axis=1)
+
+    U = U.astype(float)
+    V = V.astype(float)
+    Var = Var.astype(float)
+
+    result = dask.array.sqrt(((abs(U - V) ** 2) / Var).sum(axis=-1))
+
+    result = _utils._unbroadcast_uv(u, v, result)
+
+    return result
+
+
 @_utils._broadcast_uv_wrapper
 def sqeuclidean(u, v):
     """
