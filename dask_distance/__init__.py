@@ -24,7 +24,7 @@ __email__ = "kirkhamj@janelia.hhmi.org"
 #######################################
 
 
-def cdist(XA, XB, metric="euclidean", p=None):
+def cdist(XA, XB, metric="euclidean", **kwargs):
     """
     Finds the distance matrix using the metric on each pair of points.
 
@@ -32,6 +32,9 @@ def cdist(XA, XB, metric="euclidean", p=None):
         XA:         2-D array of points
         XB:         2-D array of points
         metric:     string or callable
+        **kwargs:   provided to the metric (see below)
+
+    Keyword Args:
         p:          p-norm for minkowski only (default: 2)
 
     Returns:
@@ -91,22 +94,23 @@ def cdist(XA, XB, metric="euclidean", p=None):
         metric = func_mappings[metric]
 
         if metric == minkowski:
-            if p is None:
-                p = 2
-            result = metric(XA, XB, p)
-        else:
-            result = metric(XA, XB)
+            kwargs["p"] = kwargs.get("p", 2)
+
+        result = metric(XA, XB, **kwargs)
 
     return result
 
 
-def pdist(X, metric="euclidean", p=None):
+def pdist(X, metric="euclidean", **kwargs):
     """
     Finds the pairwise condensed distance matrix using the metric.
 
     Args:
         X:          2-D array of points
         metric:     string or callable
+        **kwargs:   provided to the metric (see below)
+
+    Keyword Args:
         p:          p-norm for minkowski only (default: 2)
 
     Returns:
@@ -120,7 +124,7 @@ def pdist(X, metric="euclidean", p=None):
         other tradeoffs.
     """
 
-    result = cdist(X, X, metric, p=p)
+    result = cdist(X, X, metric, **kwargs)
 
     result = dask.array.triu(result, 1)
 
