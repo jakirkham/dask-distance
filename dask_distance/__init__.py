@@ -390,6 +390,49 @@ def sqeuclidean(u, v):
     return result
 
 
+def wminkowski(u, v, p, w):
+    """
+    Finds the weighted Minkowski distance between two 1-D arrays.
+
+    .. math::
+
+       \left(
+               \sum_{i} \lvert w_{i} \cdot (u_{i} - v_{i}) \\rvert^{p}
+        \\right)^{
+            \\frac{1}{p}
+        }
+
+    Args:
+        u:           1-D array or collection of 1-D arrays
+        v:           1-D array or collection of 1-D arrays
+        p:           degree of the norm to use
+        w:           1-D array of weights
+
+    Returns:
+        float:       Minkowski distance
+    """
+
+    p = _compat._asarray(p)
+    w = _compat._asarray(w)
+
+    if w.ndim != 1:
+        raise ValueError("w must have a dimension of 1.")
+
+    U, V = _utils._broadcast_uv(u, v)
+    W = w[None, None].repeat(U.shape[0], axis=0).repeat(U.shape[1], axis=1)
+
+    U = U.astype(float)
+    V = V.astype(float)
+    p = p.astype(float)
+    W = W.astype(float)
+
+    result = (abs(W * (U - V)) ** p).sum(axis=-1) ** (1 / p)
+
+    result = _utils._unbroadcast_uv(u, v, result)
+
+    return result
+
+
 #####################################################
 #                                                   #
 #  Boolean vector distance/dissimilarity functions  #

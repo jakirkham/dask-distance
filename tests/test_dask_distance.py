@@ -25,6 +25,7 @@ import dask_distance
         ("minkowski", {"p": 3}),
         ("minkowski", {"p": 1.4}),
         ("sqeuclidean", {}),
+        ("wminkowski", {"p": 3, "w": 1}),
     ]
 )
 @pytest.mark.parametrize("et, u, v", [
@@ -51,6 +52,8 @@ def test_1d_dist_err(funcname, kw, et, u, v):
         ("minkowski", {"p": 3}),
         ("minkowski", {"p": 1.4}),
         ("sqeuclidean", {}),
+        ("wminkowski", {"p": 4}),
+        ("wminkowski", {"p": 1.6}),
     ]
 )
 @pytest.mark.parametrize(
@@ -76,6 +79,9 @@ def test_1d_dist(funcname, kw, seed, size, chunks):
 
     sp_func = getattr(spdist, funcname)
     da_func = getattr(dask_distance, funcname)
+
+    if funcname == "wminkowski":
+        kw["w"] = 2 * np.random.random((size,)) - 1
 
     a_r = sp_func(a_u, a_v, **kw)
     d_r = da_func(d_u, d_v, **kw)
