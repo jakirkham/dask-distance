@@ -53,12 +53,15 @@ def cdist(XA, XB, metric="euclidean", **kwargs):
         "hamming": hamming,
         "jaccard": jaccard,
         "kulsinski": kulsinski,
+        "mahalanobis": mahalanobis,
         "minkowski": minkowski,
         "rogerstanimoto": rogerstanimoto,
         "russellrao": russellrao,
         "sokalmichener": sokalmichener,
         "sokalsneath": sokalsneath,
+        "seuclidean": seuclidean,
         "sqeuclidean": sqeuclidean,
+        "wminkowski": wminkowski,
         "yule": yule,
     }
 
@@ -93,8 +96,22 @@ def cdist(XA, XB, metric="euclidean", **kwargs):
 
         metric = func_mappings[metric]
 
-        if metric == minkowski:
-            kwargs["p"] = kwargs.get("p", 2)
+        if metric == mahalanobis:
+            if "VI" not in kwargs:
+                kwargs["VI"] = (
+                    dask.array.linalg.inv(
+                        dask.array.cov(dask.array.vstack([XA, XB]).T)
+                    ).T
+                )
+        elif metric == minkowski:
+            kwargs.setdefault("p", 2)
+        elif metric == seuclidean:
+            if "V" not in kwargs:
+                kwargs["V"] = (
+                    dask.array.var(dask.array.vstack([XA, XB]), axis=0, ddof=1)
+                )
+        elif metric == wminkowski:
+            kwargs.setdefault("p", 2)
 
         result = metric(XA, XB, **kwargs)
 
@@ -123,6 +140,13 @@ def pdist(X, metric="euclidean", **kwargs):
         Smaller chunks will increase savings though there may be
         other tradeoffs.
     """
+
+    if metric == "mahalanobis":
+        if "VI" not in kwargs:
+            kwargs["VI"] = dask.array.linalg.inv(dask.array.cov(X.T)).T
+    elif metric == "seuclidean":
+        if "V" not in kwargs:
+            kwargs["V"] = dask.array.var(X, axis=0, ddof=1)
 
     result = cdist(X, X, metric, **kwargs)
 

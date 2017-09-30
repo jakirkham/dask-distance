@@ -106,9 +106,15 @@ def test_1d_dist(funcname, kw, seed, size, chunks):
         ("correlation", {}),
         ("cosine", {}),
         ("euclidean", {}),
+        ("mahalanobis", {"VI": None}),
+        ("mahalanobis", {}),
         ("minkowski", {}),
         ("minkowski", {"p": 3}),
+        ("seuclidean", {"V": None}),
+        ("seuclidean", {}),
         ("sqeuclidean", {}),
+        ("wminkowski", {}),
+        ("wminkowski", {"p": 1.6}),
         (lambda u, v: (abs(u - v) ** 3).sum() ** (1.0 / 3.0), {}),
     ]
 )
@@ -133,6 +139,19 @@ def test_2d_cdist(metric, kw, seed, u_shape, u_chunks, v_shape, v_chunks):
     d_u = da.from_array(a_u, chunks=u_chunks)
     d_v = da.from_array(a_v, chunks=v_chunks)
 
+    if metric == "mahalanobis":
+        if "VI" not in kw:
+            kw["VI"] = 2 * np.random.random(2 * u_shape[-1:]) - 1
+        elif kw["VI"] is None:
+            kw.pop("VI")
+    elif metric == "seuclidean":
+        if "V" not in kw:
+            kw["V"] = 2 * np.random.random(u_shape[-1:]) - 1
+        elif kw["V"] is None:
+            kw.pop("V")
+    elif metric == "wminkowski":
+        kw["w"] = np.random.random(u_shape[-1:])
+
     a_r = spdist.cdist(a_u, a_v, metric, **kw)
     d_r = dask_distance.cdist(d_u, d_v, metric, **kw)
 
@@ -148,9 +167,15 @@ def test_2d_cdist(metric, kw, seed, u_shape, u_chunks, v_shape, v_chunks):
         ("correlation", {}),
         ("cosine", {}),
         ("euclidean", {}),
+        ("mahalanobis", {"VI": None}),
+        ("mahalanobis", {}),
         ("minkowski", {}),
         ("minkowski", {"p": 3}),
+        ("seuclidean", {"V": None}),
+        ("seuclidean", {}),
         ("sqeuclidean", {}),
+        ("wminkowski", {}),
+        ("wminkowski", {"p": 1.6}),
         (lambda u, v: (abs(u - v) ** 3).sum() ** (1.0 / 3.0), {}),
     ]
 )
@@ -171,6 +196,19 @@ def test_2d_pdist(metric, kw, seed, u_shape, u_chunks):
 
     a_u = 2 * np.random.random(u_shape) - 1
     d_u = da.from_array(a_u, chunks=u_chunks)
+
+    if metric == "mahalanobis":
+        if "VI" not in kw:
+            kw["VI"] = 2 * np.random.random(2 * u_shape[-1:]) - 1
+        elif kw["VI"] is None:
+            kw.pop("VI")
+    elif metric == "seuclidean":
+        if "V" not in kw:
+            kw["V"] = 2 * np.random.random(u_shape[-1:]) - 1
+        elif kw["V"] is None:
+            kw.pop("V")
+    elif metric == "wminkowski":
+        kw["w"] = np.random.random(u_shape[-1:])
 
     a_r = spdist.pdist(a_u, metric, **kw)
     d_r = dask_distance.pdist(d_u, metric, **kw)
