@@ -94,14 +94,11 @@ def _indices(dimensions, dtype=int, chunks=None):
 def _ravel(a):
     a = _asarray(a)
 
-    a = a.rechunk((a.ndim - 1) * (1,) + (a.shape[-1],))
-
-    r = dask.array.atop(
-        numpy.ravel, (a.ndim + 1,),
-        a, tuple(range(0, a.ndim)),
-        dtype=a.dtype,
-        new_axes={(a.ndim + 1): a.size},
-        adjust_chunks={(a.ndim + 1): a.chunks[-1]}
-    )
+    r = a
+    try:
+        r = r.ravel()
+    except ValueError:
+        # Fallback for Dask pre-0.14.1.
+        r = r.rechunk(r.chunks[:1] + r.shape[1:]).ravel()
 
     return r
