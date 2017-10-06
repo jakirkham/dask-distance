@@ -40,6 +40,7 @@ def cdist(XA, XB, metric="euclidean", **kwargs):
                     (default: estimated from XA and XB)
         VI:         Inverse of the covariance matrix for mahalanobis only
                     (default: estimated from XA and XB)
+        w:          1-D array of weights for wminkowski only (required)
 
     Returns:
         array:      distance between each combination of points
