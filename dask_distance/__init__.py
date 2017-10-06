@@ -375,7 +375,7 @@ def mahalanobis(u, v, VI):
     Args:
         u:           1-D array or collection of 1-D arrays
         v:           1-D array or collection of 1-D arrays
-        V:           Inverse of the covariance matrix
+        VI:          Inverse of the covariance matrix
 
     Returns:
         float:       Mahalanobis distance
