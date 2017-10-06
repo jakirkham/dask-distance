@@ -131,6 +131,8 @@ def pdist(X, metric="euclidean", **kwargs):
 
     Keyword Args:
         p:          p-norm for minkowski only (default: 2)
+        V:          1-D array of variances for seuclidean only
+                    (default: estimated from X)
 
     Returns:
         array:      condensed distance between each pair
