@@ -38,6 +38,8 @@ def cdist(XA, XB, metric="euclidean", **kwargs):
         p:          p-norm for minkowski only (default: 2)
         V:          1-D array of variances for seuclidean only
                     (default: estimated from XA and XB)
+        VI:         Inverse of the covariance matrix for mahalanobis only
+                    (default: estimated from XA and XB)
 
     Returns:
         array:      distance between each combination of points
