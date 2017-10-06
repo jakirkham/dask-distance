@@ -36,6 +36,11 @@ def cdist(XA, XB, metric="euclidean", **kwargs):
 
     Keyword Args:
         p:          p-norm for minkowski only (default: 2)
+        V:          1-D array of variances for seuclidean only
+                    (default: estimated from XA and XB)
+        VI:         Inverse of the covariance matrix for mahalanobis only
+                    (default: estimated from XA and XB)
+        w:          1-D array of weights for wminkowski only (required)
 
     Returns:
         array:      distance between each combination of points
@@ -129,6 +134,11 @@ def pdist(X, metric="euclidean", **kwargs):
 
     Keyword Args:
         p:          p-norm for minkowski only (default: 2)
+        V:          1-D array of variances for seuclidean only
+                    (default: estimated from X)
+        VI:         Inverse of the covariance matrix for mahalanobis only
+                    (default: estimated from X)
+        w:          1-D array of weights for wminkowski only (required)
 
     Returns:
         array:      condensed distance between each pair
