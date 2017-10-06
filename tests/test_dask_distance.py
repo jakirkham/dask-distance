@@ -155,6 +155,7 @@ def test_2d_cdist(metric, kw, seed, u_shape, u_chunks, v_shape, v_chunks):
     a_r = spdist.cdist(a_u, a_v, metric, **kw)
     d_r = dask_distance.cdist(d_u, d_v, metric, **kw)
 
+    assert d_r.shape == a_r.shape
     assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
 
 
@@ -322,6 +323,7 @@ def test_2d_bool_cdist(metric, seed, u_shape, u_chunks, v_shape, v_chunks):
     a_r = spdist.cdist(a_u, a_v, metric)
     d_r = dask_distance.cdist(d_u, d_v, metric)
 
+    assert d_r.shape == a_r.shape
     assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
 
 
