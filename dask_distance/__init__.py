@@ -65,11 +65,11 @@ def cdist(XA, XB, metric="euclidean", **kwargs):
         "yule": yule,
     }
 
-    XA = _compat._asarray(XA)
-    XB = _compat._asarray(XB)
-
     result = None
     if callable(metric):
+        XA = _compat._asarray(XA)
+        XB = _compat._asarray(XB)
+
         XA_bc, XB_bc = _utils._broadcast_uv(XA, XB)
 
         XA_bc = XA_bc.rechunk(XA_bc.chunks[:-1] + ((XA_bc.shape[-1],),))
