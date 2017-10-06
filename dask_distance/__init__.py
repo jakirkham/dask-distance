@@ -138,6 +138,7 @@ def pdist(X, metric="euclidean", **kwargs):
                     (default: estimated from X)
         VI:         Inverse of the covariance matrix for mahalanobis only
                     (default: estimated from X)
+        w:          1-D array of weights for wminkowski only (required)
 
     Returns:
         array:      condensed distance between each pair
