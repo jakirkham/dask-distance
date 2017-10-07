@@ -60,8 +60,8 @@ def _broadcast_uv_wrapper(func):
 
 def _cdist_apply(U, V, metric):
     result = numpy.empty(U.shape[:-1], dtype=float)
-    for i in itertools.product(*[_pycompat.irange(e) for e in result.shape]):
-        result[i] = metric(U[i], V[i])
+    for i, j in numpy.ndindex(result.shape):
+        result[i, j] = metric(U[i, j], V[i, j])
     return result
 
 
