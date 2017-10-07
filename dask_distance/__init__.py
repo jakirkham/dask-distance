@@ -151,6 +151,12 @@ def pdist(X, metric="euclidean", **kwargs):
         other tradeoffs.
     """
 
+    if not callable(metric):
+        try:
+            metric = metric.decode("utf-8")
+        except AttributeError:
+            pass
+
     if metric == "mahalanobis":
         if "VI" not in kwargs:
             kwargs["VI"] = dask.array.linalg.inv(dask.array.cov(X.T)).T
