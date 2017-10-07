@@ -91,8 +91,6 @@ def cdist(XA, XB, metric="euclidean", **kwargs):
             concatenate=True,
             metric=metric
         )
-
-        result = result.rechunk(XA.chunks[0:1] + XB.chunks[0:1])
     else:
         try:
             metric = metric.decode("utf-8")
