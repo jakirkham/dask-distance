@@ -26,8 +26,8 @@ def _broadcast_uv(u, v):
     if V.ndim != 2:
         raise ValueError("v must be a 1-D or 2-D array.")
 
-    U = dask.array.repeat(U[:, None], len(V), axis=1)
-    V = dask.array.repeat(V[None, :], len(U), axis=0)
+    U = U[:, None]
+    V = V[None, :]
 
     return U, V
 
@@ -59,10 +59,13 @@ def _broadcast_uv_wrapper(func):
 
 
 def _cdist_apply(U, V, metric):
-    result = numpy.empty(U.shape[:-1], dtype=float)
+    U = U[:, 0, :]
+    V = V[0, :, :]
+
+    result = numpy.empty((len(U), len(V)), dtype=float)
 
     for i, j in numpy.ndindex(result.shape):
-        result[i, j] = metric(U[i, j], V[i, j])
+        result[i, j] = metric(U[i], V[j])
 
     return result
 
