@@ -75,13 +75,13 @@ def cdist(XA, XB, metric="euclidean", **kwargs):
         XA = _compat._asarray(XA)
         XB = _compat._asarray(XB)
 
+        XA = XA.astype(float)
+        XB = XB.astype(float)
+
         XA_bc, XB_bc = _utils._broadcast_uv(XA, XB)
 
         XA_bc = XA_bc.rechunk(XA_bc.chunks[:-1] + ((XA_bc.shape[-1],),))
         XB_bc = XB_bc.rechunk(XB_bc.chunks[:-1] + ((XB_bc.shape[-1],),))
-
-        XA_bc = XA_bc.astype(float)
-        XB_bc = XB_bc.astype(float)
 
         result = dask.array.atop(
             _utils._cdist_apply, "ij",
