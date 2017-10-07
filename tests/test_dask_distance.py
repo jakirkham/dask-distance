@@ -214,6 +214,7 @@ def test_2d_pdist(metric, kw, seed, u_shape, u_chunks):
     a_r = spdist.pdist(a_u, metric, **kw)
     d_r = dask_distance.pdist(d_u, metric, **kw)
 
+    assert d_r.shape == a_r.shape
     assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
 
 
@@ -362,4 +363,5 @@ def test_2d_bool_pdist(metric, seed, u_shape, u_chunks):
     a_r = spdist.pdist(a_u, metric)
     d_r = dask_distance.pdist(d_u, metric)
 
+    assert d_r.shape == a_r.shape
     assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
