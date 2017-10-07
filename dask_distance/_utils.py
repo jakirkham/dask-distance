@@ -26,8 +26,8 @@ def _broadcast_uv(u, v):
     if V.ndim != 2:
         raise ValueError("v must be a 1-D or 2-D array.")
 
-    U = dask.array.repeat(U[:, None], len(V), axis=1)
-    V = dask.array.repeat(V[None, :], len(U), axis=0)
+    U = U[:, None]
+    V = V[None, :]
 
     return U, V
 
