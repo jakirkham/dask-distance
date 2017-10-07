@@ -89,16 +89,3 @@ def _indices(dimensions, dtype=int, chunks=None):
         )
 
     return grid
-
-
-def _ravel(a):
-    a = _asarray(a)
-
-    r = a
-    try:
-        r = r.ravel()
-    except ValueError:
-        # Fallback for Dask pre-0.14.1.
-        r = r.rechunk(r.chunks[:1] + r.shape[1:]).ravel()
-
-    return r
