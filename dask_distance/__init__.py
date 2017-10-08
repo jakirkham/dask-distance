@@ -7,6 +7,7 @@ import dask
 import dask.array
 
 from . import _compat
+from . import _pycompat
 from . import _utils
 
 from ._version import get_versions
@@ -165,7 +166,7 @@ def pdist(X, metric="euclidean", **kwargs):
     result = cdist(X, X, metric, **kwargs)
 
     result = dask.array.concatenate([
-        result[i, i + 1:] for i in range(0, len(result) - 1)
+        result[i, i + 1:] for i in _pycompat.irange(0, len(result) - 1)
     ])
 
     return result
