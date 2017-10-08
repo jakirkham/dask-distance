@@ -189,6 +189,7 @@ def test_2d_cdist(metric, kw, seed, u_shape, u_chunks, v_shape, v_chunks):
 )
 @pytest.mark.parametrize(
     "u_shape, u_chunks", [
+        ((1, 6), (1, 3)),
         ((7, 6), (2, 3)),
     ]
 )
@@ -197,6 +198,9 @@ def test_2d_pdist(metric, kw, seed, u_shape, u_chunks):
 
     a_u = 2 * np.random.random(u_shape) - 1
     d_u = da.from_array(a_u, chunks=u_chunks)
+
+    if u_shape[0] == 1 and metric in ["mahalanobis", "seuclidean"]:
+        pytest.skip(metric + " is not supported for 1 point.")
 
     if metric == "mahalanobis":
         if "VI" not in kw:
