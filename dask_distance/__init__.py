@@ -165,9 +165,14 @@ def pdist(X, metric="euclidean", **kwargs):
 
     result = cdist(X, X, metric, **kwargs)
 
-    result = dask.array.concatenate([
+    result = [
         result[i, i + 1:] for i in _pycompat.irange(0, len(result) - 1)
-    ])
+    ]
+
+    if result:
+        result = dask.array.concatenate(result)
+    else:
+        result = dask.array.empty((0,), dtype=float, chunks=(1,))
 
     return result
 
