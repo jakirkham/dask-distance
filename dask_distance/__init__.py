@@ -156,12 +156,12 @@ def pdist(X, metric="euclidean", **kwargs):
         except AttributeError:
             pass
 
-    if metric == "mahalanobis":
-        if "VI" not in kwargs:
-            kwargs["VI"] = dask.array.linalg.inv(dask.array.cov(X.T)).T
-    elif metric == "seuclidean":
-        if "V" not in kwargs:
-            kwargs["V"] = dask.array.var(X, axis=0, ddof=1)
+        if metric == "mahalanobis":
+            if "VI" not in kwargs:
+                kwargs["VI"] = dask.array.linalg.inv(dask.array.cov(X.T)).T
+        elif metric == "seuclidean":
+            if "V" not in kwargs:
+                kwargs["V"] = dask.array.var(X, axis=0, ddof=1)
 
     result = cdist(X, X, metric, **kwargs)
 
