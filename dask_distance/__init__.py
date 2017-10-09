@@ -150,6 +150,8 @@ def pdist(X, metric="euclidean", **kwargs):
         other tradeoffs.
     """
 
+    X = _compat._atleast_2d(X).astype(float)
+
     if not callable(metric):
         try:
             metric = metric.decode("utf-8")
