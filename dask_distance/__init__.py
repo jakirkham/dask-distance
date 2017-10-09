@@ -220,15 +220,15 @@ def squareform(X, force="no"):
             X_tri.append(X[j1:j1 + j2])
             j1 += j2
 
-        z = dask.array.zeros((1, 1), dtype=X.dtype, chunks=(1, 1))
+        z = dask.array.zeros((d, 1), dtype=X.dtype, chunks=(1, 1))
 
-        result = z
+        result = z[d - 1:d]
         for i in _pycompat.irange(d - 2, -1, -1):
             X_tri_i = X_tri[i]
             result = result.rechunk(2 * X_tri_i.chunks)
             result = dask.array.concatenate(
                 [
-                    dask.array.concatenate([z, X_tri_i[None]], axis=1),
+                    dask.array.concatenate([z[i:i + 1], X_tri_i[None]], axis=1),
                     dask.array.concatenate([X_tri_i[:, None], result], axis=1)
                 ],
                 axis=0
