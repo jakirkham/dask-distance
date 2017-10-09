@@ -3,6 +3,8 @@
 
 from __future__ import division, unicode_literals
 
+import numpy
+
 import dask
 import dask.array
 
@@ -175,6 +177,84 @@ def pdist(X, metric="euclidean", **kwargs):
         result = dask.array.concatenate(result)
     else:
         result = dask.array.empty((0,), dtype=float, chunks=(1,))
+
+    return result
+
+
+def squareform(X, force="no"):
+    """
+    Converts between dense and sparse distance matrices
+
+    Args:
+        X:          2-D square symmetric matrix or 1-D vector of distances
+        force:      whether to force to a vector or a matrix
+
+    Returns:
+        array:      1-D vector or 2-D square symmetric matrix of distances
+    """
+
+    X = _compat._asarray(X)
+
+    try:
+        force = force.decode("utf-8")
+    except AttributeError:
+        pass
+
+    conv = force
+    if force not in ["tovec", "tomatrix"]:
+        if X.ndim == 1:
+            conv = "tomatrix"
+        elif X.ndim == 2:
+            conv = "tovec"
+        else:
+            raise ValueError("X must be a vector or a square matrix.")
+
+    if conv == "tovec":
+        if X.ndim != 2 or X.shape[0] != X.shape[1]:
+            raise ValueError("X must be a square matrix.")
+    elif conv == "tomatrix":
+        if X.ndim != 1:
+            raise ValueError("X must be a vector.")
+
+    if conv == "tomatrix":
+        d = (1.0 + numpy.sqrt(1.0 + 8.0 * float(len(X)))) / 2.0
+        d = int(numpy.round(d))
+
+        if (d * (d - 1)) != (2 * len(X)):
+            raise ValueError("Unacceptable length for X.")
+
+        X_tri = []
+        j1 = 0
+        for j2 in _pycompat.irange(d - 1, -1, -1):
+            X_tri.append(X[j1:j1 + j2])
+            j1 += j2
+
+        z = dask.array.zeros((1,), dtype=X.dtype, chunks=(1,))
+
+        result = []
+        for i in range(d):
+            col_i = []
+
+            for j in range(i):
+                i_j = i - j
+                col_i.append(X_tri[j][i_j - 1:i_j])
+            col_i.append(z)
+            col_i.append(X_tri[i])
+
+            result.append(dask.array.concatenate([
+                a for a in col_i if a.size
+            ]))
+
+        result = dask.array.stack(result)
+    elif conv == "tovec":
+        result = [
+            X[i, i + 1:] for i in range(0, len(X) - 1)
+        ]
+
+        if result:
+            result = dask.array.concatenate(result)
+        else:
+            result = dask.array.empty((0,), dtype=X.dtype, chunks=(1,))
 
     return result
 
