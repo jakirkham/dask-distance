@@ -233,6 +233,10 @@ def squareform(X, force="no"):
                 ],
                 axis=0
             )
+        if X_tri:
+            result = result.rechunk(
+                2 * (X_tri[0].chunks[0][:-1] + (X_tri[0].chunks[0][-1] + 1,),)
+            )
     elif conv == "tovec":
         result = [
             X[i, i + 1:] for i in range(0, len(X) - 1)
