@@ -167,7 +167,37 @@ def pdist(X, metric="euclidean", **kwargs):
             if "V" not in kwargs:
                 kwargs["V"] = dask.array.var(X, axis=0, ddof=1)
 
-    result = squareform(cdist(X, X, metric, **kwargs), force="tovec")
+    result_cdist = cdist(X, X, metric, **kwargs)
+
+    result = []
+
+    i_c_0, j_c_0 = 0, 0
+    for i_c_01, j_c_01 in _pycompat.izip(*result_cdist.chunks):
+        i_c_1 = i_c_0 + i_c_01
+        j_c_1 = j_c_0 + j_c_01
+
+        for i in _pycompat.irange(i_c_0, i_c_1):
+            if (i + 1) < j_c_1:
+                result.append(
+                    cdist(
+                        X[i:i + 1],
+                        X[i + 1:j_c_1],
+                        metric,
+                        **kwargs
+                    )[0]
+                )
+            if j_c_1 < result_cdist.shape[1]:
+                result.append(
+                    result_cdist[i, j_c_1:]
+                )
+
+        i_c_0 = i_c_1
+        j_c_0 = j_c_1
+
+    if result:
+        result = dask.array.concatenate(result)
+    else:
+        result = dask.array.empty((0,), dtype=float, chunks=(1,))
 
     return result
 
