@@ -11,15 +11,8 @@ from . import _pycompat
 
 
 def _broadcast_uv(u, v):
-    u = _compat._asarray(u)
-    v = _compat._asarray(v)
-
-    U = u
-    if U.ndim == 1:
-        U = U[None]
-    V = v
-    if V.ndim == 1:
-        V = V[None]
+    U = _compat._atleast_2d(u)
+    V = _compat._atleast_2d(v)
 
     if U.ndim != 2:
         raise ValueError("u must be a 1-D or 2-D array.")
