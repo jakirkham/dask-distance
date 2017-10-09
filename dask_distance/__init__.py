@@ -180,14 +180,25 @@ def pdist(X, metric="euclidean", **kwargs):
 
         result_pdist_i = result_empty[i_c_0:i_c_1, i_c_0:i_c_1]
         if i_c_01 > 1:
-            result_pdist_i = squareform(
-                pdist(
-                    X[i_c_0:i_c_1].rechunk({0: (i_c_01 + 1) // 2}),
-                    metric,
-                    **kwargs
-                ),
-                force="tomatrix"
+            X_i_c_01 = X[i_c_0:i_c_1]
+            result_pdist_i = pdist(
+                X_i_c_01.rechunk((i_c_01 + 1) // 2),
+                metric,
+                **kwargs
             )
+
+            result_pdist_i_chunks = sum(
+                [
+                    X_i_c_01[i:].chunks[0]
+                    for i in _pycompat.irange(1, len(X_i_c_01))
+                ],
+                tuple()
+            )
+            result_pdist_i = result_pdist_i.rechunk(
+                2 * (result_pdist_i_chunks,)
+            )
+
+            result_pdist_i = squareform(result_pdist_i, force="tomatrix")
 
         for ir, i in enumerate(_pycompat.irange(i_c_0, i_c_1)):
             if (i + 1) < i_c_1:
