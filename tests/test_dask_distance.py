@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
+from __future__ import absolute_import, division
 
 import numpy as np
 import scipy.spatial.distance as spdist
@@ -369,3 +369,66 @@ def test_2d_bool_pdist(metric, seed, u_shape, u_chunks):
 
     assert d_r.shape == a_r.shape
     assert np.allclose(np.array(d_r)[()], a_r, equal_nan=True)
+
+
+@pytest.mark.parametrize(
+    "et, X_shape, X_chunks, force", [
+        (ValueError, (4, 3, 2), (2, 2, 2), "no"),
+        (ValueError, (4, 3, 2), (2, 2, 2), "tovec"),
+        (ValueError, (4, 3, 2), (2, 2, 2), "tomatrix"),
+        (ValueError, (4,), (2,), "tovec"),
+        (ValueError, (4, 3), (2, 2), "tomatrix"),
+        (ValueError, (4, 3), (2, 2), "no"),
+        (ValueError, (4, 3), (2, 2), "tovec"),
+        (ValueError, (2,), (2,), "no"),
+        (ValueError, (2,), (2,), "tomatrix"),
+    ]
+)
+def test_squareform_err(et, X_shape, X_chunks, force):
+    np.random.seed(0)
+
+    a_X = np.random.random(X_shape)
+    d_X = da.from_array(a_X, chunks=X_chunks)
+
+    with pytest.raises(et):
+        dask_distance.squareform(d_X, force=force)
+
+
+@pytest.mark.parametrize(
+    "X_shape, X_chunks, force", [
+        ((0,), (1,), "no"),
+        ((0,), (1,), "tomatrix"),
+        ((0, 0), (1, 1), "no"),
+        ((0, 0), (1, 1), "tovec"),
+        ((1,), (1,), "no"),
+        ((1,), (1,), "tomatrix"),
+        ((3,), (2,), "no"),
+        ((3,), (2,), "tomatrix"),
+        ((6,), (2,), "no"),
+        ((6,), (2,), "tomatrix"),
+        ((1, 1), (1, 1), "no"),
+        ((1, 1), (1, 1), "tovec"),
+        ((3, 3), (1, 2), "no"),
+        ((3, 3), (1, 2), "tovec"),
+        ((10, 10), (4, 5), "no"),
+        ((10, 10), (4, 5), "tovec"),
+    ]
+)
+@pytest.mark.parametrize(
+    "seed", [
+        0,
+        137,
+    ]
+)
+def test_squareform(seed, X_shape, X_chunks, force):
+    np.random.seed(seed)
+
+    a_X = np.random.random(X_shape)
+    d_X = da.from_array(a_X, chunks=X_chunks)
+
+    a_R = spdist.squareform(a_X, force=force, checks=False)
+    d_R = dask_distance.squareform(d_X, force=force)
+
+    assert d_R.shape == a_R.shape
+    assert d_R.dtype == a_R.dtype
+    assert np.allclose(np.array(d_R)[()], a_R, equal_nan=True)
