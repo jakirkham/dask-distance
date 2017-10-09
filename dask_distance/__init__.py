@@ -167,32 +167,39 @@ def pdist(X, metric="euclidean", **kwargs):
             if "V" not in kwargs:
                 kwargs["V"] = dask.array.var(X, axis=0, ddof=1)
 
-    result_cdist = cdist(X, X, metric, **kwargs)
+    result_cdist = cdist(X, X, metric, **kwargs).rechunk(2 * (X.chunks[0],))
+    result_empty = dask.array.empty(
+        result_cdist.shape, result_cdist.dtype, chunks=result_cdist.chunks
+    )
 
     result = []
 
-    i_c_0, j_c_0 = 0, 0
-    for i_c_01, j_c_01 in _pycompat.izip(*result_cdist.chunks):
+    i_c_0 = 0
+    for i_c_01 in result_cdist.chunks[0]:
         i_c_1 = i_c_0 + i_c_01
-        j_c_1 = j_c_0 + j_c_01
 
-        for i in _pycompat.irange(i_c_0, i_c_1):
-            if (i + 1) < j_c_1:
+        result_pdist_i = result_empty[i_c_0:i_c_1, i_c_0:i_c_1]
+        if i_c_01 > 1:
+            result_pdist_i = squareform(
+                pdist(
+                    X[i_c_0:i_c_1].rechunk({0: (i_c_01 + 1) // 2}),
+                    metric,
+                    **kwargs
+                ),
+                force="tomatrix"
+            )
+
+        for ir, i in enumerate(_pycompat.irange(i_c_0, i_c_1)):
+            if (i + 1) < i_c_1:
                 result.append(
-                    cdist(
-                        X[i:i + 1],
-                        X[i + 1:j_c_1],
-                        metric,
-                        **kwargs
-                    )[0]
+                    result_pdist_i[ir, ir + 1:i_c_01]
                 )
-            if j_c_1 < result_cdist.shape[1]:
+            if i_c_1 < result_cdist.shape[1]:
                 result.append(
-                    result_cdist[i, j_c_1:]
+                    result_cdist[i, i_c_1:]
                 )
 
         i_c_0 = i_c_1
-        j_c_0 = j_c_1
 
     if result:
         result = dask.array.concatenate(result)
