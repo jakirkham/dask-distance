@@ -180,9 +180,8 @@ def pdist(X, metric="euclidean", **kwargs):
 
         result_pdist_i = result_empty[i_c_0:i_c_1, i_c_0:i_c_1]
         if i_c_01 > 1:
-            X_i_c_01 = X[i_c_0:i_c_1]
             X_i_c_01 = dask.array.concatenate([
-                X_i_c_01[:i_c_01 // 2], X_i_c_01[i_c_01 // 2:]
+                X[i_c_0:i_c_0 + (i_c_01 // 2)], X[i_c_0 + (i_c_01 // 2):i_c_1]
             ])
             result_pdist_i = pdist(X_i_c_01, metric, **kwargs)
 
