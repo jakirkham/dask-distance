@@ -180,11 +180,11 @@ def pdist(X, metric="euclidean", **kwargs):
 
         result_pdist_i = result_empty[i_c_0:i_c_1, i_c_0:i_c_1]
         if i_c_01 > 1:
-            result_pdist_i = pdist(
-                X[i_c_0:i_c_1].rechunk({0: (i_c_01 + 1) // 2}),
-                metric,
-                **kwargs
-            )
+            X_i_c_01 = X[i_c_0:i_c_1]
+            X_i_c_01 = dask.array.concatenate([
+                X_i_c_01[:i_c_01 // 2], X_i_c_01[i_c_01 // 2:]
+            ])
+            result_pdist_i = pdist(X_i_c_01, metric, **kwargs)
 
         ir_flat = 0
         for ir, i in enumerate(_pycompat.irange(i_c_0, i_c_1)):
