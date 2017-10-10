@@ -189,13 +189,9 @@ def pdist(X, metric="euclidean", **kwargs):
         for ir, i in enumerate(_pycompat.irange(i_c_0, i_c_1)):
             if (i + 1) < i_c_1:
                 ir_flat += ir
-                result.append(
-                    result_pdist_i[ir_flat:ir_flat + i_c_01]
-                )
+                result.append(result_pdist_i[ir_flat:ir_flat + i_c_01])
             if i_c_1 < result_cdist.shape[1]:
-                result.append(
-                    result_cdist[i, i_c_1:]
-                )
+                result.append(result_cdist[i, i_c_1:])
 
         i_c_0 = i_c_1
 
