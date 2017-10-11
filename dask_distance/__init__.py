@@ -168,9 +168,6 @@ def pdist(X, metric="euclidean", **kwargs):
                 kwargs["V"] = dask.array.var(X, axis=0, ddof=1)
 
     result_cdist = cdist(X, X, metric, **kwargs).rechunk(2 * (X.chunks[0],))
-    result_empty = dask.array.empty(
-        result_cdist.shape, result_cdist.dtype, chunks=result_cdist.chunks
-    )
 
     result = []
 
@@ -178,7 +175,7 @@ def pdist(X, metric="euclidean", **kwargs):
     for i_c_01 in result_cdist.chunks[0]:
         i_c_1 = i_c_0 + i_c_01
 
-        result_pdist_i = result_empty[i_c_0:i_c_1, i_c_0:i_c_1]
+        result_pdist_i = None
         if i_c_01 > 1:
             X_i_c_01 = dask.array.concatenate([
                 X[i_c_0:i_c_0 + (i_c_01 // 2)], X[i_c_0 + (i_c_01 // 2):i_c_1]
@@ -187,7 +184,7 @@ def pdist(X, metric="euclidean", **kwargs):
 
         ir_flat = 0
         for ir, i in enumerate(_pycompat.irange(i_c_0, i_c_1)):
-            if (i + 1) < i_c_1:
+            if ((i + 1) < i_c_1) and (result_pdist_i is not None):
                 ir_flat += ir
                 result.append(result_pdist_i[ir_flat:ir_flat + i_c_01])
             if i_c_1 < result_cdist.shape[1]:
