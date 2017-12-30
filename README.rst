@@ -7,7 +7,7 @@ dask-distance
         :target: https://pypi.python.org/pypi/dask-distance
         :alt: PyPI
 
-.. image:: https://anaconda.org/conda-forge/dask-distance/badges/version.svg
+.. image:: https://img.shields.io/conda/vn/conda-forge/dask-distance.svg
         :target: https://anaconda.org/conda-forge/dask-distance
         :alt: conda-forge
 
